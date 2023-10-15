@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class ModelSettings {
   bool status;
   String msg;
@@ -105,10 +107,10 @@ class PlanDetails {
         json['id'] ?? 0,
         json['plan_name'] ?? '',
         json['plan_amount'] ?? '',
-        json['is_month_days'] ?? 0,
-        json['validity'] ?? 0,
-        json['is_download'] ?? 0,
-        json['show_advertisement'] ?? 0);
+        int.tryParse(json['is_month_days'].toString()) ?? 0,
+        int.tryParse(json['validity'].toString()) ?? 0,
+        int.tryParse(json['is_download'].toString()) ?? 0,
+        int.tryParse(json['show_advertisement'].toString()) ?? 0);
   }
 }
 
@@ -175,16 +177,16 @@ class ModelSettingsData {
         json['purchased_plan_date'] ?? '',
         json['key_rzp'] ?? '',
         json['admin_rzp_key'] ?? '',
-        json['download'] ?? 0,
-        json['ads'] ?? 0,
-        json['gender'] ?? 0,
-        json['status'] ?? 0,
+        int.tryParse(json['download'].toString()) ?? 0,
+        int.tryParse(json['ads'].toString()) ?? 0,
+        int.tryParse(json['gender'].toString()) ?? 0,
+        int.tryParse(json['status'].toString()) ?? 0,
         json['google_api_key'] ?? '',
-        json['is_youtube'] ?? 0,
-        json['yt_country_code'] ?? '',
+        int.tryParse(json['is_youtube'].toString()) ?? 0,
+        (json['yt_country_code'] ?? '').toString(),
         json['yt_channel_key'] ?? '',
         json['plan_expiry_date'] ?? '',
-        json['in_app_purchase'] ?? 0,
+        int.tryParse(json['in_app_purchase'].toString()) ?? 0,
         PlanDetails.fromJson(json['plan_detail']));
   }
 }

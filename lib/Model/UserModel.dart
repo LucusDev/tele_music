@@ -10,8 +10,13 @@ class UserModel {
 
   factory UserModel.fromJson(Map<dynamic, dynamic> json) {
     List l = List.from(json['selectedLanguage']);
-    return UserModel(json['status'], json['msg'], json['login_token'],
-        json['appVersion'], UserData.fromJson(json['data']), l);
+    return UserModel(
+        json['status'],
+        json['msg'],
+        json['login_token'],
+        int.tryParse(json['appVersion'].toString()) ?? 5,
+        UserData.fromJson(json['data']),
+        l);
   }
 }
 
@@ -28,7 +33,13 @@ class UserData {
       this.gender);
 
   factory UserData.fromJson(Map<String, dynamic> json) {
-    return UserData(json['id'], json['name'], json['email'],
-        json['mobile'] ?? '', json['image'], json['dob'] ?? '', json['gender']);
+    return UserData(
+        json['id'],
+        json['name'],
+        json['email'],
+        json['mobile'] ?? '',
+        json['image'],
+        json['dob'] ?? '',
+        int.tryParse(json['gender'].toString()) ?? 0);
   }
 }

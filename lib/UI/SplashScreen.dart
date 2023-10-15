@@ -83,53 +83,51 @@ class _RipplesAnimationState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/default_screen.jpg"),
-                fit: BoxFit.cover),
-          ),
-          padding: EdgeInsets.all(6.0),
-          child: ListView(children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 58, 0, 0),
-              child: CustomPaint(
-                painter: CirclePainter(
-                  _controller,
-                  color: widget.color,
-                ),
-                child: SizedBox(
-                  width: widget.size * 4.125,
-                  height: widget.size * 4.125,
-                  child: _button(),
-                ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/default_screen.jpg"),
+              fit: BoxFit.cover),
+        ),
+        padding: EdgeInsets.all(6.0),
+        child: ListView(children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 58, 0, 0),
+            child: CustomPaint(
+              painter: CirclePainter(
+                _controller,
+                color: widget.color,
+              ),
+              child: SizedBox(
+                width: widget.size * 4.125,
+                height: widget.size * 4.125,
+                child: _button(),
               ),
             ),
-            Container(
-              margin: EdgeInsets.fromLTRB(12, 65, 12, 10),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(12, 65, 12, 10),
+            alignment: Alignment.center,
+            child: Text(
+              'Welcome To',
+              style: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: appColors().colorTextHead),
+            ),
+          ),
+          Container(
               alignment: Alignment.center,
               child: Text(
-                'Welcome To',
+                AppConstant.appName,
                 style: TextStyle(
                     fontFamily: 'Nunito',
-                    fontSize: 26,
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
-                    color: appColors().colorTextHead),
-              ),
-            ),
-            Container(
-                alignment: Alignment.center,
-                child: Text(
-                  AppConstant.appName,
-                  style: TextStyle(
-                      fontFamily: 'Nunito',
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: appColors().primaryColorApp),
-                ))
-          ]),
-        ),
+                    color: appColors().primaryColorApp),
+              ))
+        ]),
       ),
     );
   }

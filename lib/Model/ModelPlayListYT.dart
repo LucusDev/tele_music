@@ -62,8 +62,8 @@ class Medium {
   factory Medium.fromJson(Map<dynamic, dynamic> json) {
     return Medium(
       json['url'] ?? '',
-      json['width'] ?? 0,
-      json['height'] ?? 0,
+      int.tryParse(json['width'].toString()) ?? 0,
+      int.tryParse(json['height'].toString()) ?? 0,
     );
   }
 }

@@ -60,15 +60,15 @@ class CurrentPlanData {
           0, '', 'No Plan Available', '', 0, 0, 0, 1, 0, '', '');
     } else {
       return CurrentPlanData(
-          json['id'],
+          int.tryParse(json['id'].toString()) ?? 0,
           json['image'],
           json['plan_name'],
           json['plan_amount'],
-          json['is_month_days'],
-          json['validity'],
-          json['is_download'],
-          json['show_advertisement'],
-          json['status'],
+          int.tryParse(json['is_month_days'].toString()) ?? 0,
+          int.tryParse(json['validity'].toString()) ?? 0,
+          int.tryParse(json['is_download'].toString()) ?? 0,
+          int.tryParse(json['show_advertisement'].toString()) ?? 0,
+          int.tryParse(json['status'].toString()) ?? 0,
           json['created_at'],
           json['updated_at']);
     }
@@ -107,19 +107,19 @@ class SubData {
 
   factory SubData.fromJson(Map<String, dynamic> json) {
     return SubData(
-      json['id'],
+      int.tryParse(json['id'].toString()) ?? 0,
       json['image'],
       json['plan_name'],
       json['plan_amount'],
-      json['is_month_days'],
-      json['validity'],
-      json['is_download'],
-      json['show_advertisement'],
-      json['status'],
+      int.tryParse(json['is_month_days'].toString()) ?? 0,
+      int.tryParse(json['validity'].toString()) ?? 0,
+      int.tryParse(json['is_download'].toString()) ?? 0,
+      int.tryParse(json['show_advertisement'].toString()) ?? 0,
+      int.tryParse(json['status'].toString()) ?? 0,
       json['created_at'],
       json['updated_at'],
-      json['product_id'] ?? '',
-      json['in_app_purchase'] ?? '',
+      (json['product_id'] ?? '').toString(),
+      (json['in_app_purchase'] ?? '').toString(),
     );
   }
 }
