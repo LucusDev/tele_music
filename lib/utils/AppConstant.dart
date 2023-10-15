@@ -3,13 +3,10 @@ class AppConstant {
   static const String appName = 'TeleMusic';
 
   static const String BaseUrl =
-      "https://kamleshyadav.com/musioo" + //main web url or base url here
-          "/public" +
-          "/api/" +
-          "v1/";
-  static const String ImageUrl = "https://kamleshyadav.com/musioo" +
-      "/public/"; //main web url or base url here
-//https://kamleshyadav.com/musioo
+      "https://telemusic.io" + "/public" + "/api/" + "v1/";
+  static const String ImageUrl =
+      "https://telemusic.io" + "/public/"; //main web url or base url here
+
   //api name below
   static const String API_LOGIN = "login";
   static const String API_logout = "logout";
