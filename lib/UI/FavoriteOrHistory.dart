@@ -20,7 +20,7 @@ AudioPlayerHandler? _audioHandler;
 String from = '';
 
 class Favorite extends StatefulWidget {
-  Favorite(String s) {
+  Favorite(String s, {Key? key}) : super(key: key) {
     from = s;
   }
 
@@ -67,7 +67,7 @@ class StateClass extends State {
     if (!from.contains('fav')) {
       showArrow = true;
 
-      Future.delayed(Duration(seconds: 3)).then((_) {
+      Future.delayed(const Duration(seconds: 3)).then((_) {
         setState(() {
           showArrow = false; //goes back to arrow Icon
           // Anything else you want
@@ -83,12 +83,12 @@ class StateClass extends State {
     setState(() {});
   }
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1000));
     setState(() {});
     _refreshController.refreshCompleted();
   }
@@ -104,7 +104,7 @@ class StateClass extends State {
         barrierLabel: "Barrier",
         barrierDismissible: true,
         barrierColor: Colors.black.withOpacity(0.5),
-        transitionDuration: Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 700),
         context: context,
         pageBuilder: (_, __, ___) {
           return Align(
@@ -115,7 +115,7 @@ class StateClass extends State {
                 width: 265,
                 height: 260,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFfee400)),
+                    border: Border.all(color: const Color(0xFFfee400)),
                     gradient: LinearGradient(
                       colors: [
                         appColors().colorBackground,
@@ -132,7 +132,7 @@ class StateClass extends State {
                       if (!from.contains('fav'))
                         Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.all(1),
+                            margin: const EdgeInsets.all(1),
                             child: InkResponse(
                               onTap: () {
                                 addRemoveHisAPI(ids);
@@ -143,7 +143,7 @@ class StateClass extends State {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.all(16),
+                                        padding: const EdgeInsets.all(16),
                                         alignment: Alignment.centerLeft,
                                         width: 68,
                                         child: Image.asset(
@@ -163,14 +163,14 @@ class StateClass extends State {
                             )),
                       Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.all(1),
+                          margin: const EdgeInsets.all(1),
                           child: InkResponse(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                      padding: EdgeInsets.all(14),
+                                      padding: const EdgeInsets.all(14),
                                       alignment: Alignment.centerLeft,
                                       width: 68,
                                       child: favrateStatus.contains("1")
@@ -202,7 +202,7 @@ class StateClass extends State {
                           )),
                       Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.all(1),
+                          margin: const EdgeInsets.all(1),
                           child: InkResponse(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -211,7 +211,7 @@ class StateClass extends State {
                                   Container(
                                       width: 68,
                                       alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.all(14),
+                                      padding: const EdgeInsets.all(14),
                                       child: Image.asset(
                                         'assets/icons/addto.png',
                                       )),
@@ -275,10 +275,10 @@ class StateClass extends State {
 
       setState(() {});
     }
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: appColors().colorBackground,
-        body: Container(
+    return Scaffold(
+      backgroundColor: appColors().colorBackground,
+      body: SafeArea(
+        child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
               image: (sharedPreThemeData.themeImageBack.isEmpty)
@@ -294,7 +294,7 @@ class StateClass extends State {
               Container(
                 height: 45,
                 alignment: Alignment.topCenter,
-                margin: EdgeInsets.fromLTRB(0, 12, 2, 2),
+                margin: const EdgeInsets.fromLTRB(0, 12, 2, 2),
                 child: Text(
                     from.contains('fav')
                         ? 'Favorites'
@@ -313,7 +313,7 @@ class StateClass extends State {
               Container(
                 height: 45,
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.fromLTRB(6, 2, 2, 2),
+                margin: const EdgeInsets.fromLTRB(6, 2, 2, 2),
                 child: IconButton(
                   icon: Icon(
                     Icons.arrow_back_ios_outlined,
@@ -327,22 +327,22 @@ class StateClass extends State {
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                    margin: EdgeInsets.all(14),
+                    margin: const EdgeInsets.all(14),
                     alignment: Alignment.center,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (!isLoading)
-                          if (list.length <= 0)
+                          if (list.isEmpty)
                             Container(
                               height: 200,
-                              margin: EdgeInsets.fromLTRB(18, 10, 18, 15),
+                              margin: const EdgeInsets.fromLTRB(18, 10, 18, 15),
                               child:
                                   Image.asset('assets/images/placeholder.png'),
                             ),
                         Text(
                           (!isLoading)
-                              ? (list.length <= 0)
+                              ? (list.isEmpty)
                                   ? 'No Music Found !!'
                                   : ""
                               : "Loading...",
@@ -359,19 +359,19 @@ class StateClass extends State {
                     )),
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(0, 45, 2, 2),
+                margin: const EdgeInsets.fromLTRB(0, 45, 2, 2),
                 child: RawScrollbar(
-                  isAlwaysShown: true,
-                  thumbColor: Color(0xFFfee400),
-                  radius: Radius.circular(20),
+                  // isAlwaysShown: true,
+                  thumbColor: const Color(0xFFfee400),
+                  radius: const Radius.circular(20),
                   thickness: 5,
                   child: SmartRefresher(
                     enablePullDown: true,
                     enablePullUp: false,
                     controller: _refreshController,
                     onRefresh: _onRefresh,
-                    physics: BouncingScrollPhysics(),
-                    header: ClassicHeader(
+                    physics: const BouncingScrollPhysics(),
+                    header: const ClassicHeader(
                       refreshingIcon:
                           Icon(Icons.refresh, color: Color(0xFFfee400)),
                       refreshingText: '',
@@ -385,22 +385,16 @@ class StateClass extends State {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Music(
-                                      _audioHandler,
-                                      "",
-                                      "",
-                                      list,
-                                      "" + audioPath,
-                                      index,
-                                      false,
-                                      '')),
+                                  builder: (context) => Music(_audioHandler, "",
+                                      "", list, audioPath, index, false, '')),
                             );
                           },
-                          contentPadding: EdgeInsets.fromLTRB(14, 6, 14, 6),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(14, 6, 14, 6),
                           leading: CircleAvatar(
                             radius: 28.0,
-                            backgroundImage:
-                                AssetImage('assets/images/placeholder2.jpg'),
+                            backgroundImage: const AssetImage(
+                                'assets/images/placeholder2.jpg'),
                             foregroundImage: NetworkImage(AppConstant.ImageUrl +
                                 pathImage +
                                 list[index].image),
@@ -430,15 +424,12 @@ class StateClass extends State {
                           ),
                           trailing: InkResponse(
                             onTap: () {
-                              showDialog(
-                                  context,
-                                  "" + list[index].id.toString(),
-                                  "add",
-                                  "" + list[index].favourite.toString());
+                              showDialog(context, "${list[index].id}", "add",
+                                  list[index].favourite);
                             },
                             child: Container(
                               height: 50,
-                              padding: EdgeInsets.all(14),
+                              padding: const EdgeInsets.all(14),
                               child: Image.asset(
                                 'assets/icons/threedots.png',
                                 color: (sharedPreThemeData

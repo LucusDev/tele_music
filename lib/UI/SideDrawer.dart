@@ -307,62 +307,62 @@ class SideDrawer {
                                 ),
                               ),
                             ),
-                            if (hasPre)
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: InkResponse(
-                                  child: Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(14, 7, 14, 7),
-                                      margin: EdgeInsets.fromLTRB(12, 8, 0, 2),
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              appColors().primaryColorApp,
-                                              appColors().primaryColorApp,
-                                              appColors().PrimaryDarkColorApp
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(30.0)),
-                                      child: Text(
-                                        'Subscription plans',
-                                        style: TextStyle(
-                                            fontFamily: 'Nunito-Bold',
-                                            fontSize: 15.0,
-                                            color: appColors().white),
-                                      )),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    if (Platform.isAndroid) {
-                                      // Android-specific code
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => GoPro(),
-                                          settings: RouteSettings(
-                                            arguments: 'afterlogin',
-                                          ),
-                                        ),
-                                      );
-                                    } else if (Platform.isIOS) {
-                                      // iOS-specific code
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              InAppPurch(email, name),
-                                          settings: RouteSettings(
-                                            arguments: 'afterlogin',
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
+                            // if (hasPre)
+                            //   Align(
+                            //     alignment: Alignment.centerLeft,
+                            //     child: InkResponse(
+                            //       child: Container(
+                            //           padding:
+                            //               EdgeInsets.fromLTRB(14, 7, 14, 7),
+                            //           margin: EdgeInsets.fromLTRB(12, 8, 0, 2),
+                            //           decoration: BoxDecoration(
+                            //               gradient: LinearGradient(
+                            //                 colors: [
+                            //                   appColors().primaryColorApp,
+                            //                   appColors().primaryColorApp,
+                            //                   appColors().PrimaryDarkColorApp
+                            //                 ],
+                            //                 begin: Alignment.centerLeft,
+                            //                 end: Alignment.centerRight,
+                            //               ),
+                            //               borderRadius:
+                            //                   BorderRadius.circular(30.0)),
+                            //           child: Text(
+                            //             'Subscription plans',
+                            //             style: TextStyle(
+                            //                 fontFamily: 'Nunito-Bold',
+                            //                 fontSize: 15.0,
+                            //                 color: appColors().white),
+                            //           )),
+                            //       onTap: () {
+                            //         Navigator.pop(context);
+                            //         if (Platform.isAndroid) {
+                            //           // Android-specific code
+                            //           Navigator.push(
+                            //             context,
+                            //             MaterialPageRoute(
+                            //               builder: (context) => GoPro(),
+                            //               settings: RouteSettings(
+                            //                 arguments: 'afterlogin',
+                            //               ),
+                            //             ),
+                            //           );
+                            //         } else if (Platform.isIOS) {
+                            //           // iOS-specific code
+                            //           Navigator.push(
+                            //             context,
+                            //             MaterialPageRoute(
+                            //               builder: (context) =>
+                            //                   InAppPurch(email, name),
+                            //               settings: RouteSettings(
+                            //                 arguments: 'afterlogin',
+                            //               ),
+                            //             ),
+                            //           );
+                            //         }
+                            //       },
+                            //     ),
+                            //   ),
                           ],
                         );
                       } else {
@@ -860,60 +860,60 @@ class SideDrawer {
                 },
               ),
             ),
-            Container(
-              decoration: (checkSelected.toString().contains('Payment History'))
-                  ? BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          appColors().colorBackEditText,
-                          appColors().colorBackEditText,
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                    )
-                  : null,
-              child: ListTile(
-                leading: Container(
-                  width: 35,
-                  height: 35,
-                  padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff59d3c9),
-                          Color(0xff59d3c9),
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: Container(
-                      padding: EdgeInsets.all(4),
-                      child: Image.asset('assets/icons/history.png')),
-                ),
-                title: Text(
-                  'Purchase History',
-                  style: TextStyle(
-                      fontFamily: 'Nunito',
-                      fontSize: 14.0,
-                      color: appColors().colorTextSideDrawer),
-                ),
-                onTap: () => {
-                  checkSelected = 'Payment History',
-                  newState(() {}),
-                  Navigator.pop(context),
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PurchaseHistory(),
-                        settings: RouteSettings(
-                          arguments: 'his',
-                        )),
-                  ),
-                },
-              ),
-            ),
+            // Container(
+            //   decoration: (checkSelected.toString().contains('Payment History'))
+            //       ? BoxDecoration(
+            //           gradient: LinearGradient(
+            //             colors: [
+            //               appColors().colorBackEditText,
+            //               appColors().colorBackEditText,
+            //             ],
+            //             begin: Alignment.centerLeft,
+            //             end: Alignment.centerRight,
+            //           ),
+            //         )
+            //       : null,
+            //   child: ListTile(
+            //     leading: Container(
+            //       width: 35,
+            //       height: 35,
+            //       padding: EdgeInsets.all(6),
+            //       decoration: BoxDecoration(
+            //           gradient: LinearGradient(
+            //             colors: [
+            //               Color(0xff59d3c9),
+            //               Color(0xff59d3c9),
+            //             ],
+            //             begin: Alignment.centerLeft,
+            //             end: Alignment.centerRight,
+            //           ),
+            //           borderRadius: BorderRadius.circular(8.0)),
+            //       child: Container(
+            //           padding: EdgeInsets.all(4),
+            //           child: Image.asset('assets/icons/history.png')),
+            //     ),
+            //     title: Text(
+            //       'Purchase History',
+            //       style: TextStyle(
+            //           fontFamily: 'Nunito',
+            //           fontSize: 14.0,
+            //           color: appColors().colorTextSideDrawer),
+            //     ),
+            //     onTap: () => {
+            //       checkSelected = 'Payment History',
+            //       newState(() {}),
+            //       Navigator.pop(context),
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => PurchaseHistory(),
+            //             settings: RouteSettings(
+            //               arguments: 'his',
+            //             )),
+            //       ),
+            //     },
+            //   ),
+            // ),
             Container(
               decoration: (checkSelected.toString().contains('Change Language'))
                   ? BoxDecoration(

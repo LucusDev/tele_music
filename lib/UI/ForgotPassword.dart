@@ -679,29 +679,27 @@ class _State extends State<ForgotPassword> {
 class ResetSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: appColors().colorBackground,
-          body: Container(
-              child: Stack(
-            children: [
-              Image.asset('assets/images/SuccessfullysetBackground.jpg'),
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                      margin: EdgeInsets.fromLTRB(6, 0, 6, 230),
-                      child: Text(
-                        Resources.of(context).strings.resetMyPassSuccess,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: appColors().colorText),
-                      ))),
-            ],
-          ))),
-    );
+    return Scaffold(
+        backgroundColor: appColors().colorBackground,
+        body: SafeArea(
+            child: Stack(
+          children: [
+            Image.asset('assets/images/SuccessfullysetBackground.jpg'),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    margin: EdgeInsets.fromLTRB(6, 0, 6, 230),
+                    child: Text(
+                      Resources.of(context).strings.resetMyPassSuccess,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: appColors().colorText),
+                    ))),
+          ],
+        )));
   }
 }
 

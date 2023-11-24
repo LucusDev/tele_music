@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:musioo/Model/ModelAllCat.dart';
 import 'package:musioo/Presenter/CatSubCatMusicPresenter.dart';
@@ -11,7 +12,7 @@ import 'BottomNavigation.dart';
 import 'Music.dart';
 import 'package:we_slide/we_slide.dart';
 import 'package:audio_service/audio_service.dart';
-
+import 'package:dio/dio.dart';
 import 'MusicList.dart';
 
 String typ = '';
@@ -97,7 +98,8 @@ class _AllCategoryByNameState extends State<AllCategoryByName> {
 
         setState(() {});
       }
-    } catch (e) {
+    } on DioError catch (e) {
+      log(e.response.toString());
       setState(() {
         _loading = false;
         _error = true;
@@ -146,76 +148,77 @@ class _AllCategoryByNameState extends State<AllCategoryByName> {
   @override
   Widget build(BuildContext context) {
     final double _panelMaxSize = MediaQuery.of(context).size.height - 30;
-    return SafeArea(
-        child: Scaffold(
-            body: WeSlide(
-      controller: _controller,
-      overlayOpacity: 0.9,
-      overlay: true,
-      isDismissible: true,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: (sharedPreThemeData.themeImageBack.isEmpty)
-                ? AssetImage(AppSettings.imageBackground)
-                : AssetImage(sharedPreThemeData.themeImageBack),
-            fit: BoxFit.fill,
+    return Scaffold(
+        body: SafeArea(
+      child: WeSlide(
+        controller: _controller,
+        overlayOpacity: 0.9,
+        overlay: true,
+        isDismissible: true,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: (sharedPreThemeData.themeImageBack.isEmpty)
+                  ? AssetImage(AppSettings.imageBackground)
+                  : AssetImage(sharedPreThemeData.themeImageBack),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                height: 43,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios_outlined,
+                    color: Color(int.parse(AppSettings.colorText)),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.all(5),
+                  alignment: Alignment.center,
+                  height: 45,
+                  child: Text(
+                    "" + typ,
+                    style: TextStyle(
+                      color: Color(
+                        int.parse(AppSettings.colorText),
+                      ),
+                      fontFamily: 'Nunito-Bold',
+                      fontSize: 18.0,
+                    ),
+                  )),
+              Container(
+                  margin: EdgeInsets.fromLTRB(0, 54, 0, 0),
+                  child: buildPostsView())
+            ],
           ),
         ),
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
-              height: 43,
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: Color(int.parse(AppSettings.colorText)),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.all(5),
-                alignment: Alignment.center,
-                height: 45,
-                child: Text(
-                  "" + typ,
-                  style: TextStyle(
-                    color: Color(
-                      int.parse(AppSettings.colorText),
-                    ),
-                    fontFamily: 'Nunito-Bold',
-                    fontSize: 18.0,
-                  ),
-                )),
-            Container(
-                margin: EdgeInsets.fromLTRB(0, 54, 0, 0),
-                child: buildPostsView())
-          ],
-        ),
+        panel: Music(_audioHandler, "", "", [], "bottomSlider", 0, true,
+            _controller.hide),
+        panelHeader: StreamBuilder<MediaItem?>(
+            stream: _audioHandler!.mediaItem,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                _panelMinSize = 63.0;
+                return BottomNavigation(_audioHandler).getNaviagtion(context);
+              } else {
+                _panelMinSize = 0.0;
+                return Container(
+                  height: 0.0,
+                  color: appColors().colorBackground,
+                );
+              }
+            }),
+        panelMinSize: _panelMinSize,
+        panelMaxSize: _panelMaxSize,
+        blur: true,
       ),
-      panel: Music(
-          _audioHandler, "", "", [], "bottomSlider", 0, true, _controller.hide),
-      panelHeader: StreamBuilder<MediaItem?>(
-          stream: _audioHandler!.mediaItem,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              _panelMinSize = 63.0;
-              return BottomNavigation(_audioHandler).getNaviagtion(context);
-            } else {
-              _panelMinSize = 0.0;
-              return Container(
-                height: 0.0,
-                color: appColors().colorBackground,
-              );
-            }
-          }),
-      panelMinSize: _panelMinSize,
-      panelMaxSize: _panelMaxSize,
-      blur: true,
-    )));
+    ));
   }
 
   Widget buildPostsView() {

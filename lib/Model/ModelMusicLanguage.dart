@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class ModelMusicLanguage {
   bool status;
   String msg;
@@ -35,11 +33,11 @@ class Data {
       this.created_at, this.updated_at);
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      json['id'],
+      int.tryParse((json['id'] ?? "").toString()) ?? 0,
       json['language_name'],
       json['language_code'],
       json['image'],
-      json['status'],
+      int.tryParse((json['status'] ?? "").toString()) ?? 0,
       json['created_at'],
       json['updated_at'],
     );

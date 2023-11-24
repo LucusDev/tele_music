@@ -143,344 +143,352 @@ class state extends State {
   Widget build(BuildContext context) {
     double wi = (MediaQuery.of(context).size.width - 46) / 2;
 
-    return SafeArea(
-        child: Scaffold(
-      body: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: (sharedPreThemeData.themeImageBack.isEmpty)
-                  ? AssetImage(AppSettings.imageBackground)
-                  : AssetImage(sharedPreThemeData.themeImageBack),
-              fit: BoxFit.fill,
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: (sharedPreThemeData.themeImageBack.isEmpty)
+                    ? AssetImage(AppSettings.imageBackground)
+                    : AssetImage(sharedPreThemeData.themeImageBack),
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          child: ListView(
-            children: [
-              Stack(
-                children: [
+            child: ListView(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      height: 45,
+                      alignment: Alignment.topCenter,
+                      margin: EdgeInsets.fromLTRB(0, 15.2, 2, 2),
+                      child: Text('Playlist Update',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: (sharedPreThemeData.themeImageBack.isEmpty)
+                                  ? Color(int.parse(AppSettings.colorText))
+                                  : Color(int.parse(
+                                      sharedPreThemeData.themeColorFont)),
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    Container(
+                      height: 45,
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.fromLTRB(6, 9, 2, 2),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: (sharedPreThemeData.themeImageBack.isEmpty)
+                              ? Color(int.parse(AppSettings.colorText))
+                              : Color(
+                                  int.parse(sharedPreThemeData.themeColorFont)),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 55,
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  margin: EdgeInsets.fromLTRB(22, 26, 22, 6),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          appColors().colorBackEditText,
+                          appColors().colorBackEditText
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(30.0),
+                      border:
+                          Border.all(width: 1, color: appColors().colorHint)),
+                  child: TextField(
+                    controller: nameController,
+                    style: TextStyle(
+                        color: appColors().colorText,
+                        fontSize: 17.0,
+                        fontFamily: 'Nunito'),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Enter Playlist name here..',
+                      hintStyle: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 17.0,
+                          color: appColors().colorHint),
+                      suffixIcon: Image.asset(
+                        'assets/icons/pencil.png',
+                        color: appColors().colorText,
+                        height: 20,
+                        width: 18,
+                      ),
+                      suffixIconConstraints:
+                          BoxConstraints(minHeight: 18, minWidth: 8),
+                    ),
+                  ),
+                ),
+                if (showLoader)
                   Container(
-                    height: 45,
-                    alignment: Alignment.topCenter,
-                    margin: EdgeInsets.fromLTRB(0, 15.2, 2, 2),
-                    child: Text('Playlist Update',
+                    margin: EdgeInsets.fromLTRB(wi, 14, wi, 0),
+                    width: 40,
+                    child: SizedBox(
+                        height: 35,
+                        width: 30,
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(
+                                appColors().primaryColorApp),
+                            backgroundColor: appColors().colorHint,
+                            strokeWidth: 3.5)),
+                  ),
+                if (!showLoader)
+                  Container(
+                      width: 200,
+                      margin: EdgeInsets.fromLTRB(80, 14, 80, 0),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              appColors().PrimaryDarkColorApp,
+                              appColors().primaryColorApp,
+                              appColors().primaryColorApp
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30.0)),
+                      child: TextButton(
+                          child: Text(
+                            checkFun,
+                            style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff)),
+                          ),
+                          onPressed: () => {
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                                if (checkFun.contains('Create'))
+                                  {
+                                    if (nameController.text.isNotEmpty)
+                                      {
+                                        showLoader = true,
+                                        setState(() {}),
+                                        createAPI(nameController.text),
+                                      }
+                                    else
+                                      {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                'Enter name to create playlist',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.grey,
+                                            textColor:
+                                                appColors().colorBackground,
+                                            fontSize: 14.0),
+                                      }
+                                  }
+                                else
+                                  {
+                                    showLoader = true,
+                                    setState(() {}),
+                                    updateAPI(
+                                        nameController.text, updateId, token),
+                                  }
+                              })),
+                if (checkFun.contains('Create'))
+                  Container(
+                    margin: EdgeInsets.fromLTRB(12, 22, 12, 5),
+                    child: Text('Select Playlist Below',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 19,
                             color: (sharedPreThemeData.themeImageBack.isEmpty)
                                 ? Color(int.parse(AppSettings.colorText))
                                 : Color(int.parse(
-                                    sharedPreThemeData.themeColorFont)),
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.bold)),
+                                    sharedPreThemeData.themeColorFont)))),
                   ),
-                  Container(
-                    height: 45,
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.fromLTRB(6, 9, 2, 2),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios_outlined,
-                        color: (sharedPreThemeData.themeImageBack.isEmpty)
-                            ? Color(int.parse(AppSettings.colorText))
-                            : Color(
-                                int.parse(sharedPreThemeData.themeColorFont)),
-                      ),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                height: 55,
-                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                margin: EdgeInsets.fromLTRB(22, 26, 22, 6),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        appColors().colorBackEditText,
-                        appColors().colorBackEditText
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(width: 1, color: appColors().colorHint)),
-                child: TextField(
-                  controller: nameController,
-                  style: TextStyle(
-                      color: appColors().colorText,
-                      fontSize: 17.0,
-                      fontFamily: 'Nunito'),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter Playlist name here..',
-                    hintStyle: TextStyle(
-                        fontFamily: 'Nunito',
-                        fontSize: 17.0,
-                        color: appColors().colorHint),
-                    suffixIcon: Image.asset(
-                      'assets/icons/pencil.png',
-                      color: appColors().colorText,
-                      height: 20,
-                      width: 18,
-                    ),
-                    suffixIconConstraints:
-                        BoxConstraints(minHeight: 18, minWidth: 8),
-                  ),
-                ),
-              ),
-              if (showLoader)
-                Container(
-                  margin: EdgeInsets.fromLTRB(wi, 14, wi, 0),
-                  width: 40,
-                  child: SizedBox(
-                      height: 35,
-                      width: 30,
-                      child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(
-                              appColors().primaryColorApp),
-                          backgroundColor: appColors().colorHint,
-                          strokeWidth: 3.5)),
-                ),
-              if (!showLoader)
-                Container(
-                    width: 200,
-                    margin: EdgeInsets.fromLTRB(80, 14, 80, 0),
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            appColors().PrimaryDarkColorApp,
-                            appColors().primaryColorApp,
-                            appColors().primaryColorApp
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: TextButton(
-                        child: Text(
-                          checkFun,
-                          style: TextStyle(
-                              fontFamily: 'Nunito',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffffffff)),
-                        ),
-                        onPressed: () => {
-                              FocusManager.instance.primaryFocus?.unfocus(),
-                              if (checkFun.contains('Create'))
-                                {
-                                  if (nameController.text.isNotEmpty)
-                                    {
-                                      showLoader = true,
-                                      setState(() {}),
-                                      createAPI(nameController.text),
-                                    }
-                                  else
-                                    {
-                                      Fluttertoast.showToast(
-                                          msg: 'Enter name to create playlist',
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.grey,
-                                          textColor:
-                                              appColors().colorBackground,
-                                          fontSize: 14.0),
-                                    }
-                                }
-                              else
-                                {
-                                  showLoader = true,
-                                  setState(() {}),
-                                  updateAPI(
-                                      nameController.text, updateId, token),
-                                }
-                            })),
-              if (checkFun.contains('Create'))
-                Container(
-                  margin: EdgeInsets.fromLTRB(12, 22, 12, 5),
-                  child: Text('Select Playlist Below',
-                      style: TextStyle(
-                          fontSize: 19,
-                          color: (sharedPreThemeData.themeImageBack.isEmpty)
-                              ? Color(int.parse(AppSettings.colorText))
-                              : Color(int.parse(
-                                  sharedPreThemeData.themeColorFont)))),
-                ),
-              if (checkFun.contains('Create'))
-                if (!showLoader)
-                  FutureBuilder<ModelPlayList>(
-                      future: PlaylistMusicPresenter().getPlayList(token),
-                      builder: (context, projectSnap) {
-                        if (projectSnap.hasError) {
-                          Fluttertoast.showToast(
-                              msg: Resources.of(context).strings.tryAgain,
-                              toastLength: Toast.LENGTH_SHORT,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey,
-                              textColor: appColors().colorBackground,
-                              fontSize: 14.0);
+                if (checkFun.contains('Create'))
+                  if (!showLoader)
+                    FutureBuilder<ModelPlayList>(
+                        future: PlaylistMusicPresenter().getPlayList(token),
+                        builder: (context, projectSnap) {
+                          if (projectSnap.hasError) {
+                            Fluttertoast.showToast(
+                                msg: Resources.of(context).strings.tryAgain,
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.grey,
+                                textColor: appColors().colorBackground,
+                                fontSize: 14.0);
 
-                          return Material(
-                              // child: LanguageChoose(''),
-                              );
-                        } else {
-                          if (projectSnap.hasData) {
-                            ModelPlayList m = projectSnap.data!;
-                            if (m.data.length < 1) {
-                              return Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.fromLTRB(12, 23, 12, 3),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 200,
-                                        margin:
-                                            EdgeInsets.fromLTRB(18, 60, 18, 23),
-                                        child: Image.asset(
-                                            'assets/images/placeholder.png'),
-                                      ),
-                                      Text(
-                                        'Nothing created!',
-                                        style: TextStyle(
-                                          color: (sharedPreThemeData
-                                                  .themeImageBack.isEmpty)
-                                              ? Color(int.parse(
-                                                  AppSettings.colorText))
-                                              : Color(int.parse(
-                                                  sharedPreThemeData
-                                                      .themeColorFont)),
-                                          fontFamily: 'Nunito-Bold',
-                                          fontSize: 20.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            }
-                            return Container(
-                              height: MediaQuery.of(context).size.height,
-                              child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: m.data.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                      margin: EdgeInsets.fromLTRB(12, 3, 12, 3),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          InkResponse(
-                                            child: Container(
-                                              width: 200,
-                                              margin: EdgeInsets.fromLTRB(
-                                                  1, 12, 12, 12),
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                m.data[index].playlist_name,
-                                                textAlign: TextAlign.left,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    color: Color(int.parse(
-                                                        AppSettings
-                                                            .colorText))),
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              if (!idMusic.isEmpty) {
-                                                addMusicToPlayListAPI(m
-                                                    .data[index].id
-                                                    .toString());
-                                              }
-                                            },
-                                          ),
-                                          InkResponse(
-                                            onTap: () {
-                                              checkFun = 'Update';
-                                              updateName = m
-                                                  .data[index].playlist_name
-                                                  .toString();
-                                              updateId =
-                                                  m.data[index].id.toString();
-                                              nameController.text = m
-                                                  .data[index].playlist_name
-                                                  .toString();
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  12, 12, 1, 12),
-                                              child: Image.asset(
-                                                'assets/icons/pencil.png',
-                                                color: appColors().colorText,
-                                                width: 17,
-                                              ),
-                                            ),
-                                          ),
-                                          InkResponse(
-                                            child: Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  1, 12, 12, 12),
-                                              height: 20,
-                                              width: 20,
-                                              child: Image.asset(
-                                                'assets/icons/bin.png',
-                                                color: appColors().colorText,
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              isDelete(context,
-                                                  m.data[index].id.toString());
-                                            },
-                                          )
-                                        ],
-                                      ));
-                                },
-                              ),
-                            );
-                          } else {
                             return Material(
-                                type: MaterialType.transparency,
-                                child: Container(
-                                    height: 120,
-                                    width: MediaQuery.of(context).size.width,
+                                // child: LanguageChoose(''),
+                                );
+                          } else {
+                            if (projectSnap.hasData) {
+                              ModelPlayList m = projectSnap.data!;
+                              if (m.data.length < 1) {
+                                return Container(
                                     alignment: Alignment.center,
-                                    margin: EdgeInsets.fromLTRB(10, 220, 10, 0),
-                                    color: appColors().colorBackEditText,
+                                    margin: EdgeInsets.fromLTRB(12, 23, 12, 3),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        SizedBox(
-                                            child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation(
-                                                        appColors()
-                                                            .primaryColorApp),
-                                                backgroundColor:
-                                                    appColors().colorHint,
-                                                strokeWidth: 4.0)),
+                                      children: [
                                         Container(
-                                            margin: EdgeInsets.all(4),
-                                            child: Text(
-                                              Resources.of(context)
-                                                  .strings
-                                                  .loadingPleaseWait,
-                                              style: TextStyle(
-                                                  color:
-                                                      appColors().colorTextHead,
-                                                  fontSize: 18),
-                                            )),
+                                          height: 200,
+                                          margin: EdgeInsets.fromLTRB(
+                                              18, 60, 18, 23),
+                                          child: Image.asset(
+                                              'assets/images/placeholder.png'),
+                                        ),
+                                        Text(
+                                          'Nothing created!',
+                                          style: TextStyle(
+                                            color: (sharedPreThemeData
+                                                    .themeImageBack.isEmpty)
+                                                ? Color(int.parse(
+                                                    AppSettings.colorText))
+                                                : Color(int.parse(
+                                                    sharedPreThemeData
+                                                        .themeColorFont)),
+                                            fontFamily: 'Nunito-Bold',
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
                                       ],
-                                    )));
+                                    ));
+                              }
+                              return Container(
+                                height: MediaQuery.of(context).size.height,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: m.data.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(12, 3, 12, 3),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkResponse(
+                                              child: Container(
+                                                width: 200,
+                                                margin: EdgeInsets.fromLTRB(
+                                                    1, 12, 12, 12),
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  m.data[index].playlist_name,
+                                                  textAlign: TextAlign.left,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      color: Color(int.parse(
+                                                          AppSettings
+                                                              .colorText))),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                if (!idMusic.isEmpty) {
+                                                  addMusicToPlayListAPI(m
+                                                      .data[index].id
+                                                      .toString());
+                                                }
+                                              },
+                                            ),
+                                            InkResponse(
+                                              onTap: () {
+                                                checkFun = 'Update';
+                                                updateName = m
+                                                    .data[index].playlist_name
+                                                    .toString();
+                                                updateId =
+                                                    m.data[index].id.toString();
+                                                nameController.text = m
+                                                    .data[index].playlist_name
+                                                    .toString();
+                                                setState(() {});
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    12, 12, 1, 12),
+                                                child: Image.asset(
+                                                  'assets/icons/pencil.png',
+                                                  color: appColors().colorText,
+                                                  width: 17,
+                                                ),
+                                              ),
+                                            ),
+                                            InkResponse(
+                                              child: Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    1, 12, 12, 12),
+                                                height: 20,
+                                                width: 20,
+                                                child: Image.asset(
+                                                  'assets/icons/bin.png',
+                                                  color: appColors().colorText,
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                isDelete(
+                                                    context,
+                                                    m.data[index].id
+                                                        .toString());
+                                              },
+                                            )
+                                          ],
+                                        ));
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Material(
+                                  type: MaterialType.transparency,
+                                  child: Container(
+                                      height: 120,
+                                      width: MediaQuery.of(context).size.width,
+                                      alignment: Alignment.center,
+                                      margin:
+                                          EdgeInsets.fromLTRB(10, 220, 10, 0),
+                                      color: appColors().colorBackEditText,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(
+                                              child: CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation(
+                                                          appColors()
+                                                              .primaryColorApp),
+                                                  backgroundColor:
+                                                      appColors().colorHint,
+                                                  strokeWidth: 4.0)),
+                                          Container(
+                                              margin: EdgeInsets.all(4),
+                                              child: Text(
+                                                Resources.of(context)
+                                                    .strings
+                                                    .loadingPleaseWait,
+                                                style: TextStyle(
+                                                    color: appColors()
+                                                        .colorTextHead,
+                                                    fontSize: 18),
+                                              )),
+                                        ],
+                                      )));
+                            }
                           }
-                        }
-                      })
-            ],
-          )),
-    ));
+                        })
+              ],
+            )),
+      ),
+    );
   }
 }
 

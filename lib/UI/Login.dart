@@ -77,21 +77,25 @@ class _State extends State<Login> {
           backgroundColor: Colors.grey,
           textColor: appColors().colorBackground,
           fontSize: 14.0);
-
-      if (model.selectedLanguage.length >= 1) {
-        print(model.selectedLanguage.length.toString() + "             ......");
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) {
-            return HomeDiscover();
-          },
-        ));
-      } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) {
-            return LanguageChoose('fromLogin');
-          },
-        ));
-      }
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) {
+          return HomeDiscover();
+        },
+      ));
+      // if (model.selectedLanguage.length >= 1) {
+      //   print(model.selectedLanguage.length.toString() + "             ......");
+      //   Navigator.pushReplacement(context, MaterialPageRoute(
+      //     builder: (context) {
+      //       return HomeDiscover();
+      //     },
+      //   ));
+      // } else {
+      //   Navigator.pushReplacement(context, MaterialPageRoute(
+      //     builder: (context) {
+      //       return LanguageChoose('fromLogin');
+      //     },
+      //   ));
+      // }
     } else {
       Fluttertoast.showToast(
           msg: "Try Again !",

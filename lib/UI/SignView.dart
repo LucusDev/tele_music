@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:musioo/Model/ModelAppInfo.dart';
 import 'package:musioo/Presenter/AppInfoPresenter.dart';
+import 'package:musioo/UI/HomeDiscover.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -549,9 +550,13 @@ class _State extends State<SignView> {
                                                               passwordController
                                                                   .text = '';
 
+                                                              // return Material(
+                                                              //   child: LanguageChoose(
+                                                              //       'fromLogin'),
+                                                              // );
                                                               return Material(
-                                                                child: LanguageChoose(
-                                                                    'fromLogin'),
+                                                                child:
+                                                                    HomeDiscover(),
                                                               );
                                                             }
                                                             if (projectSnap

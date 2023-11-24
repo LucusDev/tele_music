@@ -13,15 +13,16 @@ class AppSettings {
 
   static ThemeData define() {
     return ThemeData(
+        scaffoldBackgroundColor: appColors().colorBackground,
         primaryColor: Color(int.parse(colorPrimary)),
-        accentColor: Color(int.parse(colorSecondary)),
         focusColor: appColors().primaryColorApp,
         unselectedWidgetColor: appColors().colorTextHead,
-        backgroundColor: Color(int.parse(colorBackground)),
-        buttonColor: Color(int.parse(colorText)),
-        primarySwatch: appColors().primaryColorApp,
-        cardColor: Color(int.parse(colorPrimary)));
+        cardColor: Color(int.parse(colorPrimary)),
+        colorScheme:
+            ColorScheme.fromSwatch(primarySwatch: appColors().primaryColorApp)
+                .copyWith(secondary: Color(int.parse(colorSecondary)))
+                .copyWith(background: Color(int.parse(colorBackground))));
   }
 
-  AppSettings();
+  const AppSettings();
 }

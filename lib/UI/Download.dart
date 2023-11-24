@@ -23,6 +23,8 @@ AudioPlayerHandler? _audioHandler;
 final _player = AudioPlayer();
 
 class Download extends StatefulWidget {
+  const Download({Key? key}) : super(key: key);
+
   @override
   StateClass createState() {
     return StateClass();
@@ -43,7 +45,7 @@ class StateClass extends State {
 
   void _listofFiles() async {
     var directory = (await getApplicationDocumentsDirectory()).path;
-    file = io.Directory("$directory").listSync();
+    file = io.Directory(directory).listSync();
     setState(() {
       //use your folder name insted of resume.
     });
@@ -73,7 +75,7 @@ class StateClass extends State {
   }
 
   Future<void> set(String url) async {
-    String songLink = url + '.mp3';
+    String songLink = '$url.mp3';
     await _player.setFilePath(songLink);
 
     _player.play();
@@ -96,7 +98,7 @@ class StateClass extends State {
         barrierLabel: "Barrier",
         barrierDismissible: true,
         barrierColor: Colors.black.withOpacity(0.5),
-        transitionDuration: Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 700),
         context: context,
         pageBuilder: (_, __, ___) {
           return Align(
@@ -107,7 +109,7 @@ class StateClass extends State {
                 width: 265,
                 height: 260,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFfee400)),
+                    border: Border.all(color: const Color(0xFFfee400)),
                     gradient: LinearGradient(
                       colors: [
                         appColors().colorBackground,
@@ -123,7 +125,7 @@ class StateClass extends State {
                     children: [
                       Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.all(1),
+                          margin: const EdgeInsets.all(1),
                           child: InkResponse(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +134,7 @@ class StateClass extends State {
                                   Container(
                                       width: 68,
                                       alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.all(14),
+                                      padding: const EdgeInsets.all(14),
                                       child: Image.asset(
                                         'assets/icons/download.png',
                                       )),
@@ -193,7 +195,7 @@ class StateClass extends State {
               fit: BoxFit.fill,
             ),
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Stack(
             alignment: Alignment.topRight,
             fit: StackFit.loose,
@@ -201,7 +203,7 @@ class StateClass extends State {
               Container(
                 height: 45,
                 alignment: Alignment.topCenter,
-                margin: EdgeInsets.fromLTRB(0, 12, 2, 2),
+                margin: const EdgeInsets.fromLTRB(0, 12, 2, 2),
                 child: Text('Downloads',
                     style: TextStyle(
                         fontSize: 20,
@@ -215,7 +217,7 @@ class StateClass extends State {
               Container(
                 height: 45,
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.fromLTRB(6, 2, 2, 2),
+                margin: const EdgeInsets.fromLTRB(6, 2, 2, 2),
                 child: IconButton(
                     icon: Icon(
                       Icons.arrow_back_ios_outlined,
@@ -230,13 +232,13 @@ class StateClass extends State {
               ),
               Container(
                 height: 45,
-                margin: EdgeInsets.fromLTRB(18, 52, 16, 8),
-                padding: EdgeInsets.fromLTRB(9.5, 0, 2, 0),
+                margin: const EdgeInsets.fromLTRB(18, 52, 16, 8),
+                padding: const EdgeInsets.fromLTRB(9.5, 0, 2, 0),
                 decoration: BoxDecoration(
                     border: Border.all(color: appColors().colorHint),
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xff1c1f2e),
+                        const Color(0xff1c1f2e),
                         appColors().colorBackEditText
                       ],
                       begin: Alignment.centerLeft,
@@ -248,14 +250,14 @@ class StateClass extends State {
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                            margin: EdgeInsets.fromLTRB(35, 0, 0, 0),
+                            margin: const EdgeInsets.fromLTRB(35, 0, 0, 0),
                             child: TextField(
                               onChanged: (value) {
                                 if (value.length > 2) {
                                   searchDbRefresh();
                                 }
 
-                                if (value.length < 1) {
+                                if (value.isEmpty) {
                                   dataDbRefresh();
                                 }
                               },
@@ -280,8 +282,8 @@ class StateClass extends State {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(0, 12, 0, 13),
-                        child: Image(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 13),
+                        child: const Image(
                           image: AssetImage('assets/icons/search.png'),
                         ),
                       ),
@@ -289,17 +291,17 @@ class StateClass extends State {
                   ],
                 ),
               ),
-              (listMain.length <= 0)
+              (listMain.isEmpty)
                   ? Align(
                       alignment: Alignment.center,
                       child: Container(
-                          margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                           alignment: Alignment.center,
                           child: Column(
                             children: [
                               Container(
                                 height: 350,
-                                margin: EdgeInsets.fromLTRB(18, 55, 18,
+                                margin: const EdgeInsets.fromLTRB(18, 55, 18,
                                     15), /*child:Image.asset('assets/images/placeholder.png') ,*/
                               ),
                               Text(
@@ -319,12 +321,12 @@ class StateClass extends State {
                     )
                   : Container(),
               Container(
-                  margin: EdgeInsets.fromLTRB(0, 95, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(0, 95, 0, 0),
                   height: MediaQuery.of(context).size.height,
                   child: RawScrollbar(
-                    isAlwaysShown: true,
-                    thumbColor: Color(0xFFfee400),
-                    radius: Radius.circular(20),
+                    // isAlwaysShown: true,
+                    thumbColor: const Color(0xFFfee400),
+                    radius: const Radius.circular(20),
                     thickness: 5,
                     child: ListView.builder(
                       itemCount: listMain.length,
@@ -336,14 +338,14 @@ class StateClass extends State {
                               for (int x = 0; x < listMain.length; x++) {
                                 listData.add(DataMusic(
                                     x,
-                                    '' + listMain[x].image,
+                                    listMain[x].image,
                                     listMain[x].url,
-                                    "" + listMain[x].duration,
+                                    listMain[x].duration,
                                     listMain[x].name,
                                     "",
                                     0,
                                     "",
-                                    "" + listMain[x].artistname,
+                                    listMain[x].artistname,
                                     "",
                                     0,
                                     0,
@@ -367,14 +369,15 @@ class StateClass extends State {
                                         '')),
                               );
                             },
-                            contentPadding: EdgeInsets.fromLTRB(14, 6, 14, 6),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(14, 6, 14, 6),
                             leading: CircleAvatar(
                               radius: 28.5,
                               backgroundImage:
                                   FileImage(File(listMain[index].image)),
                             ),
                             title: Text(
-                              '' + listMain[index].name.toString(),
+                              listMain[index].name,
                               style: TextStyle(
                                   fontSize: 16,
                                   color: (sharedPreThemeData
@@ -386,7 +389,7 @@ class StateClass extends State {
                                   fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
-                              '' + listMain[index].artistname.toString(),
+                              listMain[index].artistname,
                               style: TextStyle(
                                   fontSize: 14,
                                   color: (sharedPreThemeData
@@ -434,8 +437,10 @@ class StateClass extends State {
                                             color: appColors().colorHint)),
                                     height: 35,
                                     width: 35,
-                                    margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                    padding: EdgeInsets.fromLTRB(2, 1, 2, 1),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(2, 1, 2, 1),
                                     alignment: Alignment.center,
                                     child:
                                         (!_player.playing || index != playIndex)
@@ -461,7 +466,8 @@ class StateClass extends State {
                                   },
                                   child: Container(
                                     height: 45,
-                                    padding: EdgeInsets.fromLTRB(6, 10, 0, 10),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(6, 10, 0, 10),
                                     child: Image.asset(
                                       'assets/icons/threedots.png',
                                       color: (sharedPreThemeData
@@ -487,7 +493,7 @@ class StateClass extends State {
 }
 
 class Resources {
-  BuildContext _context;
+  final BuildContext _context;
 
   Resources(this._context);
 

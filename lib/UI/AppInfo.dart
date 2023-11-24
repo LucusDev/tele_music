@@ -92,76 +92,79 @@ class MyState extends State<AppInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            body: Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: (sharedPreThemeData.themeImageBack.isEmpty)
-              ? AssetImage(AppSettings.imageBackground)
-              : AssetImage(sharedPreThemeData.themeImageBack),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-              height: 45,
-              child: Text("" + title,
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: (sharedPreThemeData.themeImageBack.isEmpty)
-                          ? Color(int.parse(AppSettings.colorText))
-                          : Color(int.parse(sharedPreThemeData.themeColorFont)),
-                      fontFamily: 'Nunito',
-                      fontWeight: FontWeight.bold)),
-            ),
+    return Scaffold(
+        body: SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: (sharedPreThemeData.themeImageBack.isEmpty)
+                ? AssetImage(AppSettings.imageBackground)
+                : AssetImage(sharedPreThemeData.themeImageBack),
+            fit: BoxFit.fill,
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              margin: EdgeInsets.all(3),
-              child: IconButton(
-                alignment: Alignment.topLeft,
-                icon: Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: (sharedPreThemeData.themeImageBack.isEmpty)
-                      ? Color(int.parse(AppSettings.colorText))
-                      : Color(int.parse(sharedPreThemeData.themeColorFont)),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                height: 45,
+                child: Text("" + title,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: (sharedPreThemeData.themeImageBack.isEmpty)
+                            ? Color(int.parse(AppSettings.colorText))
+                            : Color(
+                                int.parse(sharedPreThemeData.themeColorFont)),
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.bold)),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 55, 16, 6),
-            child: ListView(
-              children: [
-                if (allowAds)
-                  (_isBannerAdReady)
-                      ? Align(
-                          alignment: Alignment.topCenter,
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: _bannerAd.size.width.toDouble(),
-                            height: 95,
-                            child: AdWidget(ad: _bannerAd),
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          ))
-                      : Container(),
-                HtmlWidget(
-                  detail,
-                  textStyle: TextStyle(color: appColors().white, fontSize: 18),
-                )
-              ],
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                margin: EdgeInsets.all(3),
+                child: IconButton(
+                  alignment: Alignment.topLeft,
+                  icon: Icon(
+                    Icons.arrow_back_ios_outlined,
+                    color: (sharedPreThemeData.themeImageBack.isEmpty)
+                        ? Color(int.parse(AppSettings.colorText))
+                        : Color(int.parse(sharedPreThemeData.themeColorFont)),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
             ),
-          )
-        ],
+            Container(
+              margin: EdgeInsets.fromLTRB(16, 55, 16, 6),
+              child: ListView(
+                children: [
+                  if (allowAds)
+                    (_isBannerAdReady)
+                        ? Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: _bannerAd.size.width.toDouble(),
+                              height: 95,
+                              child: AdWidget(ad: _bannerAd),
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            ))
+                        : Container(),
+                  HtmlWidget(
+                    detail,
+                    textStyle:
+                        TextStyle(color: appColors().white, fontSize: 18),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
-    )));
+    ));
   }
 }

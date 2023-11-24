@@ -152,220 +152,220 @@ class MainScreen extends State<Music> {
     setState(() {});
   }
 
-  Future<bool> showPaymentGatewaysList(
-      BuildContext context, String amount) async {
-    return (await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-            elevation: 5,
-            backgroundColor: appColors().colorBackEditText,
-            actionsAlignment: MainAxisAlignment.center,
-            content: Container(
-                height: 250,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Pay Now Via:',
-                      style: TextStyle(color: appColors().white, fontSize: 17),
-                    ),
-                    if (modelSettings
-                            .payment_gateways.razorpay.razorpay_key.isEmpty &&
-                        modelSettings.payment_gateways.paystack
-                            .paystack_public_key.isEmpty &&
-                        modelSettings
-                            .payment_gateways.stripe.stripe_client_id.isEmpty)
-                      Text(
-                        '\nNot available',
-                        style:
-                            TextStyle(color: appColors().white, fontSize: 15),
-                      ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (modelSettings.payment_gateways.stripe
-                              .stripe_client_id.isNotEmpty)
-                            Container(
-                                margin: EdgeInsets.fromLTRB(0, 29, 0, 18),
-                                width: 100,
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        appColors().white,
-                                        appColors().white,
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                child: InkResponse(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => StripePay(
-                                            currentData.title,
-                                            amount,
-                                            currentData
-                                                .extras?.entries.first.value,
-                                            '',
-                                            'SingleSongPay',
-                                            amount,
-                                            model.data.email,
-                                            model.data.name),
-                                      ),
-                                    ).then((value) {
-                                      if (value != null) {
-                                        downloadAfterPayment();
-                                      }
-                                    });
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/stripe.png',
-                                    width: 19,
-                                    height: 20,
-                                  ),
-                                )),
-                          if (modelSettings.payment_gateways.paystack
-                              .paystack_public_key.isNotEmpty)
-                            Container(
-                                margin: EdgeInsets.fromLTRB(0, 12, 1, 0),
-                                width: 100,
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        appColors().white,
-                                        appColors().white,
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                child: InkResponse(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => PayStack(
-                                            currentData.title,
-                                            amount,
-                                            currentData
-                                                .extras?.entries.first.value,
-                                            '',
-                                            'SingleSongPay',
-                                            amount,
-                                            model.data.email,
-                                            model.data.name),
-                                      ),
-                                    ).then((value) {
-                                      if (value != null) {
-                                        downloadAfterPayment();
-                                      }
-                                    });
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/paystack.png',
-                                    width: 19,
-                                    height: 20,
-                                  ),
-                                )),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (modelSettings.payment_gateways.razorpay
-                              .razorpay_key.isNotEmpty)
-                            Container(
-                                margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                width: 100,
-                                padding: EdgeInsets.all(12.5),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        appColors().white,
-                                        appColors().white,
-                                        appColors().white
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                child: InkResponse(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Razorpayment(
-                                            currentData.title,
-                                            amount,
-                                            currentData
-                                                .extras?.entries.first.value,
-                                            '',
-                                            'SingleSongPay',
-                                            amount,
-                                            model.data.email,
-                                            model.data.name),
-                                      ),
-                                    ).then((value) {
-                                      if (value != null) {
-                                        downloadAfterPayment();
-                                      }
-                                    });
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/razorpay.png',
-                                    width: 19,
-                                    height: 22,
-                                  ),
-                                )),
-                          if (modelSettings.payment_gateways.paypal
-                              .paypal_client_id.isNotEmpty)
-                            if (modelSettings.payment_gateways.paypal
-                                .paypal_client_id.isNotEmpty)
-                              Container(
-                                  margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                  width: 100,
-                                  padding: EdgeInsets.all(12.1),
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          appColors().white,
-                                          appColors().white,
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  child: InkResponse(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Paypal(
-                                              currentData.title,
-                                              amount,
-                                              currentData
-                                                  .extras?.entries.first.value,
-                                              '',
-                                              'SingleSongPay',
-                                              amount,
-                                              model.data.email,
-                                              model.data.name),
-                                        ),
-                                      );
-                                    },
-                                    child: Image.asset(
-                                      'assets/icons/paypal.png',
-                                      width: 19,
-                                      height: 22,
-                                    ),
-                                  )),
-                        ])
-                  ],
-                )))));
-  }
+  // Future<bool> showPaymentGatewaysList(
+  //     BuildContext context, String amount) async {
+  //   return (await showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //           elevation: 5,
+  //           backgroundColor: appColors().colorBackEditText,
+  //           actionsAlignment: MainAxisAlignment.center,
+  //           content: Container(
+  //               height: 250,
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Text(
+  //                     'Pay Now Via:',
+  //                     style: TextStyle(color: appColors().white, fontSize: 17),
+  //                   ),
+  //                   if (modelSettings
+  //                           .payment_gateways.razorpay.razorpay_key.isEmpty &&
+  //                       modelSettings.payment_gateways.paystack
+  //                           .paystack_public_key.isEmpty &&
+  //                       modelSettings
+  //                           .payment_gateways.stripe.stripe_client_id.isEmpty)
+  //                     Text(
+  //                       '\nNot available',
+  //                       style:
+  //                           TextStyle(color: appColors().white, fontSize: 15),
+  //                     ),
+  //                   Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                       children: [
+  //                         if (modelSettings.payment_gateways.stripe
+  //                             .stripe_client_id.isNotEmpty)
+  //                           Container(
+  //                               margin: EdgeInsets.fromLTRB(0, 29, 0, 18),
+  //                               width: 100,
+  //                               padding: EdgeInsets.all(12),
+  //                               decoration: BoxDecoration(
+  //                                   gradient: LinearGradient(
+  //                                     colors: [
+  //                                       appColors().white,
+  //                                       appColors().white,
+  //                                     ],
+  //                                     begin: Alignment.centerLeft,
+  //                                     end: Alignment.centerRight,
+  //                                   ),
+  //                                   borderRadius: BorderRadius.circular(5.0)),
+  //                               child: InkResponse(
+  //                                 onTap: () {
+  //                                   Navigator.pushReplacement(
+  //                                     context,
+  //                                     MaterialPageRoute(
+  //                                       builder: (context) => StripePay(
+  //                                           currentData.title,
+  //                                           amount,
+  //                                           currentData
+  //                                               .extras?.entries.first.value,
+  //                                           '',
+  //                                           'SingleSongPay',
+  //                                           amount,
+  //                                           model.data.email,
+  //                                           model.data.name),
+  //                                     ),
+  //                                   ).then((value) {
+  //                                     if (value != null) {
+  //                                       downloadAfterPayment();
+  //                                     }
+  //                                   });
+  //                                 },
+  //                                 child: Image.asset(
+  //                                   'assets/icons/stripe.png',
+  //                                   width: 19,
+  //                                   height: 20,
+  //                                 ),
+  //                               )),
+  //                         if (modelSettings.payment_gateways.paystack
+  //                             .paystack_public_key.isNotEmpty)
+  //                           Container(
+  //                               margin: EdgeInsets.fromLTRB(0, 12, 1, 0),
+  //                               width: 100,
+  //                               padding: EdgeInsets.all(12),
+  //                               decoration: BoxDecoration(
+  //                                   gradient: LinearGradient(
+  //                                     colors: [
+  //                                       appColors().white,
+  //                                       appColors().white,
+  //                                     ],
+  //                                     begin: Alignment.centerLeft,
+  //                                     end: Alignment.centerRight,
+  //                                   ),
+  //                                   borderRadius: BorderRadius.circular(5.0)),
+  //                               child: InkResponse(
+  //                                 onTap: () {
+  //                                   Navigator.pushReplacement(
+  //                                     context,
+  //                                     MaterialPageRoute(
+  //                                       builder: (context) => PayStack(
+  //                                           currentData.title,
+  //                                           amount,
+  //                                           currentData
+  //                                               .extras?.entries.first.value,
+  //                                           '',
+  //                                           'SingleSongPay',
+  //                                           amount,
+  //                                           model.data.email,
+  //                                           model.data.name),
+  //                                     ),
+  //                                   ).then((value) {
+  //                                     if (value != null) {
+  //                                       downloadAfterPayment();
+  //                                     }
+  //                                   });
+  //                                 },
+  //                                 child: Image.asset(
+  //                                   'assets/icons/paystack.png',
+  //                                   width: 19,
+  //                                   height: 20,
+  //                                 ),
+  //                               )),
+  //                       ]),
+  //                   Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                       children: [
+  //                         if (modelSettings.payment_gateways.razorpay
+  //                             .razorpay_key.isNotEmpty)
+  //                           Container(
+  //                               margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
+  //                               width: 100,
+  //                               padding: EdgeInsets.all(12.5),
+  //                               decoration: BoxDecoration(
+  //                                   gradient: LinearGradient(
+  //                                     colors: [
+  //                                       appColors().white,
+  //                                       appColors().white,
+  //                                       appColors().white
+  //                                     ],
+  //                                     begin: Alignment.centerLeft,
+  //                                     end: Alignment.centerRight,
+  //                                   ),
+  //                                   borderRadius: BorderRadius.circular(5.0)),
+  //                               child: InkResponse(
+  //                                 onTap: () {
+  //                                   Navigator.pushReplacement(
+  //                                     context,
+  //                                     MaterialPageRoute(
+  //                                       builder: (context) => Razorpayment(
+  //                                           currentData.title,
+  //                                           amount,
+  //                                           currentData
+  //                                               .extras?.entries.first.value,
+  //                                           '',
+  //                                           'SingleSongPay',
+  //                                           amount,
+  //                                           model.data.email,
+  //                                           model.data.name),
+  //                                     ),
+  //                                   ).then((value) {
+  //                                     if (value != null) {
+  //                                       downloadAfterPayment();
+  //                                     }
+  //                                   });
+  //                                 },
+  //                                 child: Image.asset(
+  //                                   'assets/icons/razorpay.png',
+  //                                   width: 19,
+  //                                   height: 22,
+  //                                 ),
+  //                               )),
+  //                         if (modelSettings.payment_gateways.paypal
+  //                             .paypal_client_id.isNotEmpty)
+  //                           if (modelSettings.payment_gateways.paypal
+  //                               .paypal_client_id.isNotEmpty)
+  //                             Container(
+  //                                 margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
+  //                                 width: 100,
+  //                                 padding: EdgeInsets.all(12.1),
+  //                                 decoration: BoxDecoration(
+  //                                     gradient: LinearGradient(
+  //                                       colors: [
+  //                                         appColors().white,
+  //                                         appColors().white,
+  //                                       ],
+  //                                       begin: Alignment.centerLeft,
+  //                                       end: Alignment.centerRight,
+  //                                     ),
+  //                                     borderRadius: BorderRadius.circular(5.0)),
+  //                                 child: InkResponse(
+  //                                   onTap: () {
+  //                                     Navigator.push(
+  //                                       context,
+  //                                       MaterialPageRoute(
+  //                                         builder: (context) => Paypal(
+  //                                             currentData.title,
+  //                                             amount,
+  //                                             currentData
+  //                                                 .extras?.entries.first.value,
+  //                                             '',
+  //                                             'SingleSongPay',
+  //                                             amount,
+  //                                             model.data.email,
+  //                                             model.data.name),
+  //                                       ),
+  //                                     );
+  //                                   },
+  //                                   child: Image.asset(
+  //                                     'assets/icons/paypal.png',
+  //                                     width: 19,
+  //                                     height: 22,
+  //                                   ),
+  //                                 )),
+  //                       ])
+  //                 ],
+  //               )))));
+  // }
 
   Future<void> initDb() async {
     database =
@@ -526,62 +526,62 @@ class MainScreen extends State<Music> {
     } on Exception catch (e) {}
   }
 
-  Future<bool> isUpgrade(BuildContext context) async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Subscribe or Upgrade plans to continue to download !',
-                style:
-                    TextStyle(fontSize: 18, color: appColors().colorTextHead)),
-            backgroundColor: appColors().colorBackEditText,
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false), // passing false
-                child: Text(
-                  'Cancel',
-                  style:
-                      TextStyle(fontSize: 16, color: appColors().colorTextHead),
-                ),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  if (Platform.isAndroid) {
-                    // Android-specific code
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GoPro(),
-                        settings: RouteSettings(
-                          arguments: 'afterlogin',
-                        ),
-                      ),
-                    );
-                  } else if (Platform.isIOS) {
-                    // iOS-specific code
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InAppPurch(
-                            modelSettings.data.email, modelSettings.data.name),
-                        settings: RouteSettings(
-                          arguments: 'afterlogin',
-                        ),
-                      ),
-                    );
-                  }
-                }, // passing true
-                child: Text(
-                  'Continue',
-                  style:
-                      TextStyle(fontSize: 16, color: appColors().colorTextHead),
-                ),
-              ),
-            ],
-          ),
-        )) ??
-        false;
-  }
+  // Future<bool> isUpgrade(BuildContext context) async {
+  //   return (await showDialog(
+  //         context: context,
+  //         builder: (context) => AlertDialog(
+  //           title: Text('Subscribe or Upgrade plans to continue to download !',
+  //               style:
+  //                   TextStyle(fontSize: 18, color: appColors().colorTextHead)),
+  //           backgroundColor: appColors().colorBackEditText,
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => Navigator.pop(context, false), // passing false
+  //               child: Text(
+  //                 'Cancel',
+  //                 style:
+  //                     TextStyle(fontSize: 16, color: appColors().colorTextHead),
+  //               ),
+  //             ),
+  //             TextButton(
+  //               onPressed: () async {
+  //                 Navigator.pop(context);
+  //                 if (Platform.isAndroid) {
+  //                   // Android-specific code
+  //                   Navigator.push(
+  //                     context,
+  //                     MaterialPageRoute(
+  //                       builder: (context) => GoPro(),
+  //                       settings: RouteSettings(
+  //                         arguments: 'afterlogin',
+  //                       ),
+  //                     ),
+  //                   );
+  //                 } else if (Platform.isIOS) {
+  //                   // iOS-specific code
+  //                   Navigator.push(
+  //                     context,
+  //                     MaterialPageRoute(
+  //                       builder: (context) => InAppPurch(
+  //                           modelSettings.data.email, modelSettings.data.name),
+  //                       settings: RouteSettings(
+  //                         arguments: 'afterlogin',
+  //                       ),
+  //                     ),
+  //                   );
+  //                 }
+  //               }, // passing true
+  //               child: Text(
+  //                 'Continue',
+  //                 style:
+  //                     TextStyle(fontSize: 16, color: appColors().colorTextHead),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       )) ??
+  //       false;
+  // }
 
   Future<void> getByCat() async {
     ModelMusicList mList = await CatSubcatMusicPresenter()
@@ -829,28 +829,29 @@ class MainScreen extends State<Music> {
                             } else {
                               return InkResponse(
                                 onTap: () {
-                                  if (currentAmount.isNotEmpty) {
-                                    Navigator.pop(context);
-                                    showPaymentGatewaysList(
-                                        context, currentAmount);
-                                  } else {
-                                    if (allowDown) {
-                                      downloadFile(
-                                          currentData
-                                              .extras?.entries.first.value,
-                                          currentData.duration.toString(),
-                                          currentData.title,
-                                          currentData.id,
-                                          currentData.artUri.toString(),
-                                          currentData.artist.toString());
-                                      Navigator.pop(context);
+                                  downloadAfterPayment();
+                                  // if (currentAmount.isNotEmpty) {
+                                  //   Navigator.pop(context);
+                                  //   showPaymentGatewaysList(
+                                  //       context, currentAmount);
+                                  // } else {
+                                  //   if (allowDown) {
+                                  //     downloadFile(
+                                  //         currentData
+                                  //             .extras?.entries.first.value,
+                                  //         currentData.duration.toString(),
+                                  //         currentData.title,
+                                  //         currentData.id,
+                                  //         currentData.artUri.toString(),
+                                  //         currentData.artist.toString());
+                                  //     Navigator.pop(context);
 
-                                      addRemoveDownAPI(ids);
-                                    } else {
-                                      // showDialogForCheck(context, ids, tag);
-                                      isUpgrade(context);
-                                    }
-                                  }
+                                  //     addRemoveDownAPI(ids);
+                                  //   } else {
+                                  //     // showDialogForCheck(context, ids, tag);
+                                  //     isUpgrade(context);
+                                  //   }
+                                  // }
                                 },
                                 child: Container(
                                     height: 52,

@@ -264,274 +264,269 @@ class _InfiniteScrollPaginatorDemoState extends State {
   @override
   Widget build(BuildContext context) {
     final double _panelMaxSize = MediaQuery.of(context).size.height - 30;
-    return SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: WeSlide(
-              controller: _controller,
-              overlayOpacity: 0.9,
-              overlay: true,
-              isDismissible: true,
-              body: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: (sharedPreThemeData.themeImageBack.isEmpty)
-                          ? AssetImage(AppSettings.imageBackground)
-                          : AssetImage(sharedPreThemeData.themeImageBack),
-                      fit: BoxFit.fill,
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: WeSlide(
+            controller: _controller,
+            overlayOpacity: 0.9,
+            overlay: true,
+            isDismissible: true,
+            body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: (sharedPreThemeData.themeImageBack.isEmpty)
+                        ? AssetImage(AppSettings.imageBackground)
+                        : AssetImage(sharedPreThemeData.themeImageBack),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Stack(children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    height: 45,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: (sharedPreThemeData.themeImageBack.isEmpty)
+                            ? Color(int.parse(AppSettings.colorText))
+                            : Color(
+                                int.parse(sharedPreThemeData.themeColorFont)),
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
                     ),
                   ),
-                  child: Stack(children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      height: 45,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios_outlined,
-                          color: (sharedPreThemeData.themeImageBack.isEmpty)
-                              ? Color(int.parse(AppSettings.colorText))
-                              : Color(
-                                  int.parse(sharedPreThemeData.themeColorFont)),
+                  Container(
+                    height: 45,
+                    margin: EdgeInsets.fromLTRB(45, 14, 16, 8),
+                    padding: EdgeInsets.fromLTRB(9.5, 0, 2, 0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: appColors().colorHint),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xff1c1f2e),
+                            appColors().colorBackEditText
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
                         ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ),
-                    Container(
-                      height: 45,
-                      margin: EdgeInsets.fromLTRB(45, 14, 16, 8),
-                      padding: EdgeInsets.fromLTRB(9.5, 0, 2, 0),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: appColors().colorHint),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0xff1c1f2e),
-                              appColors().colorBackEditText
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                          borderRadius: BorderRadius.circular(2.0)),
-                      child: Stack(
-                        children: [
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                  margin: EdgeInsets.fromLTRB(35, 0, 0, 0),
-                                  child: TextField(
-                                    onChanged: (value) {
-                                      if (value.length > 2) {
+                        borderRadius: BorderRadius.circular(2.0)),
+                    child: Stack(
+                      children: [
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                                margin: EdgeInsets.fromLTRB(35, 0, 0, 0),
+                                child: TextField(
+                                  onChanged: (value) {
+                                    if (value.length > 2) {
+                                      setState(() {});
+                                      if (!yt.contains("YT")) {
+                                        searchAPI();
                                         setState(() {});
-                                        if (!yt.contains("YT")) {
-                                          searchAPI();
-                                          setState(() {});
-                                        }
                                       }
-                                      if (value.isEmpty) {
-                                        if (!yt.contains("YT")) {
-                                          searchAPI();
-                                        }
+                                    }
+                                    if (value.isEmpty) {
+                                      if (!yt.contains("YT")) {
+                                        searchAPI();
                                       }
-                                    },
-                                    controller: txtSearch,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: Resources.of(context)
-                                          .strings
-                                          .searchArtistSongAlbum,
-                                      hintStyle: TextStyle(
-                                          fontFamily: 'Nunito',
-                                          fontSize: 16.0,
-                                          color: appColors().colorText),
-                                      focusColor: appColors().colorBackEditText,
-                                      hoverColor: appColors().colorBackEditText,
-                                    ),
-                                    style: TextStyle(
+                                    }
+                                  },
+                                  controller: txtSearch,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: Resources.of(context)
+                                        .strings
+                                        .searchArtistSongAlbum,
+                                    hintStyle: TextStyle(
                                         fontFamily: 'Nunito',
                                         fontSize: 16.0,
                                         color: appColors().colorText),
-                                  ))),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(0, 12, 0, 13),
-                              child: Image(
-                                image: AssetImage('assets/icons/search.png'),
-                              ),
+                                    focusColor: appColors().colorBackEditText,
+                                    hoverColor: appColors().colorBackEditText,
+                                  ),
+                                  style: TextStyle(
+                                      fontFamily: 'Nunito',
+                                      fontSize: 16.0,
+                                      color: appColors().colorText),
+                                ))),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 13),
+                            child: Image(
+                              image: AssetImage('assets/icons/search.png'),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    if (allowAds)
-                      if (_isBannerAdReady)
-                        Align(
-                            alignment: Alignment.topCenter,
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.fromLTRB(6, 50, 0, 0),
-                              width: _bannerAd.size.width.toDouble(),
-                              height: 75,
-                              child: AdWidget(ad: _bannerAd),
-                            )),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0, 114, 0, 5),
-                      child: RefreshIndicator(
-                        onRefresh: () =>
-                            Future.sync(() => _pagingController.refresh()),
-                        child: PagedListView<int, DataMusic>(
-                          pagingController: _pagingController,
-                          builderDelegate: PagedChildBuilderDelegate<DataMusic>(
-                              firstPageErrorIndicatorBuilder: (_) => Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Server error\nSomething went wrong!",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: appColors().primaryColorApp),
-                                    ),
-                                  ),
-                              newPageProgressIndicatorBuilder: (context) {
-                                return Container(
-                                    padding: EdgeInsets.all(7),
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                          width: 22,
-                                          height: 22,
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Loading..",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color:
-                                                  appColors().primaryColorApp),
-                                        ),
-                                      ],
-                                    ));
-                              },
-                              itemBuilder: (context, item, index) {
-                                String imagepath = AppConstant.ImageUrl +
-                                    pathImage +
-                                    item.image;
-
-                                return ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Music(
-                                              _audioHandler,
-                                              "",
-                                              "",
-                                              list,
-                                              "" + audioPath,
-                                              index,
-                                              false,
-                                              '')),
-                                    ).then((value) {
-                                      debugPrint(value);
-                                      _reload();
-                                    });
-                                  },
-                                  contentPadding: (index == (list.length - 1))
-                                      ? EdgeInsets.fromLTRB(15, 0, 15, 38)
-                                      : EdgeInsets.fromLTRB(15, 0, 15, 16),
-                                  leading: CircleAvatar(
-                                    radius: 28.5,
-                                    backgroundImage: AssetImage(
-                                        'assets/images/placeholder2.jpg'),
-                                    foregroundImage: NetworkImage(imagepath),
-                                  ),
-                                  title: Text(
-                                    "" + item.audio_title,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 16.5,
-                                        color: (sharedPreThemeData
-                                                .themeImageBack.isEmpty)
-                                            ? Color(int.parse(
-                                                AppSettings.colorText))
-                                            : Color(int.parse(sharedPreThemeData
-                                                .themeColorFont)),
-                                        fontFamily: 'Nunito-Bold',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                    "" + item.artists_name,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: (sharedPreThemeData
-                                                .themeImageBack.isEmpty)
-                                            ? Color(int.parse(
-                                                AppSettings.colorText))
-                                            : Color(int.parse(sharedPreThemeData
-                                                .themeColorFont)),
-                                        fontFamily: 'Nunito'),
-                                  ),
-                                  trailing: InkResponse(
-                                    onTap: () {
-                                      print("-----------  " +
-                                          list[index].id.toString());
-                                      showDialog(
-                                          context,
-                                          "" + item.id.toString(),
-                                          "add",
-                                          "" + item.favourite.toString());
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      padding: EdgeInsets.all(14),
-                                      child: Image.asset(
-                                        'assets/icons/threedots.png',
-                                        color: (sharedPreThemeData
-                                                .themeImageBack.isEmpty)
-                                            ? Color(int.parse(
-                                                AppSettings.colorText))
-                                            : Color(int.parse(sharedPreThemeData
-                                                .themeColorFont)),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
                         ),
+                      ],
+                    ),
+                  ),
+                  if (allowAds)
+                    if (_isBannerAdReady)
+                      Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.fromLTRB(6, 50, 0, 0),
+                            width: _bannerAd.size.width.toDouble(),
+                            height: 75,
+                            child: AdWidget(ad: _bannerAd),
+                          )),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 114, 0, 5),
+                    child: RefreshIndicator(
+                      onRefresh: () =>
+                          Future.sync(() => _pagingController.refresh()),
+                      child: PagedListView<int, DataMusic>(
+                        pagingController: _pagingController,
+                        builderDelegate: PagedChildBuilderDelegate<DataMusic>(
+                            firstPageErrorIndicatorBuilder: (_) => Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Server error\nSomething went wrong!",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: appColors().primaryColorApp),
+                                  ),
+                                ),
+                            newPageProgressIndicatorBuilder: (context) {
+                              return Container(
+                                  padding: EdgeInsets.all(7),
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                        width: 22,
+                                        height: 22,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        "Loading..",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: appColors().primaryColorApp),
+                                      ),
+                                    ],
+                                  ));
+                            },
+                            itemBuilder: (context, item, index) {
+                              String imagepath =
+                                  AppConstant.ImageUrl + pathImage + item.image;
+
+                              return ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Music(
+                                            _audioHandler,
+                                            "",
+                                            "",
+                                            list,
+                                            "" + audioPath,
+                                            index,
+                                            false,
+                                            '')),
+                                  ).then((value) {
+                                    debugPrint(value);
+                                    _reload();
+                                  });
+                                },
+                                contentPadding: (index == (list.length - 1))
+                                    ? EdgeInsets.fromLTRB(15, 0, 15, 38)
+                                    : EdgeInsets.fromLTRB(15, 0, 15, 16),
+                                leading: CircleAvatar(
+                                  radius: 28.5,
+                                  backgroundImage: AssetImage(
+                                      'assets/images/placeholder2.jpg'),
+                                  foregroundImage: NetworkImage(imagepath),
+                                ),
+                                title: Text(
+                                  "" + item.audio_title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16.5,
+                                      color: (sharedPreThemeData
+                                              .themeImageBack.isEmpty)
+                                          ? Color(
+                                              int.parse(AppSettings.colorText))
+                                          : Color(int.parse(sharedPreThemeData
+                                              .themeColorFont)),
+                                      fontFamily: 'Nunito-Bold',
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  "" + item.artists_name,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: (sharedPreThemeData
+                                              .themeImageBack.isEmpty)
+                                          ? Color(
+                                              int.parse(AppSettings.colorText))
+                                          : Color(int.parse(sharedPreThemeData
+                                              .themeColorFont)),
+                                      fontFamily: 'Nunito'),
+                                ),
+                                trailing: InkResponse(
+                                  onTap: () {
+                                    print("-----------  " +
+                                        list[index].id.toString());
+                                    showDialog(context, "" + item.id.toString(),
+                                        "add", "" + item.favourite.toString());
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    padding: EdgeInsets.all(14),
+                                    child: Image.asset(
+                                      'assets/icons/threedots.png',
+                                      color: (sharedPreThemeData
+                                              .themeImageBack.isEmpty)
+                                          ? Color(
+                                              int.parse(AppSettings.colorText))
+                                          : Color(int.parse(sharedPreThemeData
+                                              .themeColorFont)),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                       ),
                     ),
-                  ])),
-              panel: Music(_audioHandler, "", "", [], "bottomSlider", 0, true,
-                  _controller.hide),
-              panelHeader: StreamBuilder<MediaItem?>(
-                  stream: _audioHandler!.mediaItem,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      _panelMinSize = 63.0;
-                      return BottomNavigation(_audioHandler)
-                          .getNaviagtion(context);
-                    } else {
-                      _panelMinSize = 0.0;
-                      return Container(
-                        height: 0.0,
-                        color: appColors().colorBackground,
-                      );
-                    }
-                  }),
-              panelMinSize: _panelMinSize,
-              panelMaxSize: _panelMaxSize,
-              blur: true,
-            )));
+                  ),
+                ])),
+            panel: Music(_audioHandler, "", "", [], "bottomSlider", 0, true,
+                _controller.hide),
+            panelHeader: StreamBuilder<MediaItem?>(
+                stream: _audioHandler!.mediaItem,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    _panelMinSize = 63.0;
+                    return BottomNavigation(_audioHandler)
+                        .getNaviagtion(context);
+                  } else {
+                    _panelMinSize = 0.0;
+                    return Container(
+                      height: 0.0,
+                      color: appColors().colorBackground,
+                    );
+                  }
+                }),
+            panelMinSize: _panelMinSize,
+            panelMaxSize: _panelMaxSize,
+            blur: true,
+          ),
+        ));
   }
 
   @override

@@ -254,9 +254,9 @@ class _State extends State<LanguageChoose> {
       setState(() {});
     }
 
-    return SafeArea(
-      child: Scaffold(
-        body: WillPopScope(
+    return Scaffold(
+      body: SafeArea(
+        child: WillPopScope(
           onWillPop: () {
             return isBack(context);
           },
@@ -508,7 +508,7 @@ class _State extends State<LanguageChoose> {
                                             ),
                                           ),
                                         );
-//
+                                        //
                                       },
                                     ),
                                   ));

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -113,6 +114,7 @@ class _state extends State<HomeDiscover> with WidgetsBindingObserver {
 
   Future<dynamic> value() async {
     token = await sharePrefs.getToken();
+    log("token--->" + token.toString());
     apiSettings();
     try {
       model = await sharePrefs.getUserData();
@@ -326,631 +328,297 @@ class _state extends State<HomeDiscover> with WidgetsBindingObserver {
 
     final double _panelMaxSize = MediaQuery.of(context).size.height - 25;
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       drawer: SideDrawer().defineDrawer(context, 'Discover', _audioHandler),
       key: _scaffoldKey,
-      body: WeSlide(
-        controller: _controller,
-        overlayOpacity: 0.9,
-        overlay: true,
-        isDismissible: true,
-        body: WillPopScope(
-          onWillPop: () {
-            return isBack(context);
-          },
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 2),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: (sharedPreThemeData.themeImageBack.isEmpty)
-                    ? AssetImage(AppSettings.imageBackground)
-                    : AssetImage(sharedPreThemeData.themeImageBack),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Stack(
-              children: [
-                Container(
-                  height: 50,
-                  padding: EdgeInsets.fromLTRB(7, 0, 7, 0),
-                  margin: EdgeInsets.fromLTRB(6, 6, 5, 5),
-                  child: InkResponse(
-                    child: Image.asset(
-                      'assets/icons/dropdown.png',
-                      width: 30,
-                      height: 30,
-                      color: (sharedPreThemeData.themeImageBack.isEmpty)
-                          ? Color(int.parse(AppSettings.colorText))
-                          : Color(int.parse(sharedPreThemeData.themeColorFont)),
-                    ),
-                    onTap: () {
-                      if (_scaffoldKey.currentState!.isDrawerOpen) {
-                        _scaffoldKey.currentState!.openEndDrawer();
-                      } else {
-                        _scaffoldKey.currentState!.openDrawer();
-                      }
-                    },
-                  ),
+      body: SafeArea(
+        child: WeSlide(
+          controller: _controller,
+          overlayOpacity: 0.9,
+          overlay: true,
+          isDismissible: true,
+          body: WillPopScope(
+            onWillPop: () {
+              return isBack(context);
+            },
+            child: Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 2),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: (sharedPreThemeData.themeImageBack.isEmpty)
+                      ? AssetImage(AppSettings.imageBackground)
+                      : AssetImage(sharedPreThemeData.themeImageBack),
+                  fit: BoxFit.fill,
                 ),
-                isSelected.contains('Radio')
-                    ? Container(
-                        alignment: Alignment.topCenter,
-                        margin: EdgeInsets.fromLTRB(50, 13, 20, 8),
-                        child: Text(
-                          Resources.of(context).strings.radio,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Nunito',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 21,
-                              color: appColors().colorTextHead),
-                        ),
-                      )
-                    : Container(
-                        height: 45,
-                        margin: EdgeInsets.fromLTRB(52, 13, 20, 8),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: appColors().colorHint),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xff1c1f2e),
-                                appColors().colorBackEditText
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            borderRadius: BorderRadius.circular(2.0)),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchPage("")),
-                            ).then((value) {
-                              debugPrint(value);
-                              _reload();
-                            });
-                          },
-                          child: Stack(
-                            children: [
-                              Align(
+              ),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 50,
+                    padding: EdgeInsets.fromLTRB(7, 0, 7, 0),
+                    margin: EdgeInsets.fromLTRB(6, 6, 5, 5),
+                    child: InkResponse(
+                      child: Image.asset(
+                        'assets/icons/dropdown.png',
+                        width: 30,
+                        height: 30,
+                        color: (sharedPreThemeData.themeImageBack.isEmpty)
+                            ? Color(int.parse(AppSettings.colorText))
+                            : Color(
+                                int.parse(sharedPreThemeData.themeColorFont)),
+                      ),
+                      onTap: () {
+                        if (_scaffoldKey.currentState!.isDrawerOpen) {
+                          _scaffoldKey.currentState!.openEndDrawer();
+                        } else {
+                          _scaffoldKey.currentState!.openDrawer();
+                        }
+                      },
+                    ),
+                  ),
+                  isSelected.contains('Radio')
+                      ? Container(
+                          alignment: Alignment.topCenter,
+                          margin: EdgeInsets.fromLTRB(50, 13, 20, 8),
+                          child: Text(
+                            Resources.of(context).strings.radio,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 21,
+                                color: appColors().colorTextHead),
+                          ),
+                        )
+                      : Container(
+                          height: 45,
+                          margin: EdgeInsets.fromLTRB(52, 13, 20, 8),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: appColors().colorHint),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff1c1f2e),
+                                  appColors().colorBackEditText
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(2.0)),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchPage("")),
+                              ).then((value) {
+                                debugPrint(value);
+                                _reload();
+                              });
+                            },
+                            child: Stack(
+                              children: [
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(35, 0, 0, 0),
+                                        child: Text(
+                                          Resources.of(context)
+                                              .strings
+                                              .searchArtistSongAlbum,
+                                          style: TextStyle(
+                                              fontFamily: 'Nunito',
+                                              fontSize: 15.0,
+                                              color: appColors().colorText),
+                                        ))),
+                                Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                      margin: EdgeInsets.fromLTRB(35, 0, 0, 0),
-                                      child: Text(
-                                        Resources.of(context)
-                                            .strings
-                                            .searchArtistSongAlbum,
-                                        style: TextStyle(
-                                            fontFamily: 'Nunito',
-                                            fontSize: 15.0,
-                                            color: appColors().colorText),
-                                      ))),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Image(
-                                    image:
-                                        AssetImage('assets/icons/search.png'),
-                                    color: appColors().colorText,
+                                    padding: EdgeInsets.all(5),
+                                    child: Image(
+                                      image:
+                                          AssetImage('assets/icons/search.png'),
+                                      color: appColors().colorText,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(8, 65, 8, 25),
-                  height: MediaQuery.of(context).size.height,
-                  child: CustomScrollView(slivers: [
-                    if (allowAds)
-                      if (Platform.isAndroid)
-                        SliverToBoxAdapter(
-                          child: //ads
-                              Container(
-                            height: 108,
-                            margin: EdgeInsets.all(1),
-                            child: (_isBannerAdReady)
-                                ? Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Container(
-                                      width: _bannerAd.size.width.toDouble(),
-                                      height: 101,
-                                      child: AdWidget(ad: _bannerAd),
-                                    ),
-                                  )
-                                : Container(),
-                          ),
-                        ),
-                    if (connected)
-                      if (is_yt == 1)
-                        if (videoResult.length > 0)
+                  Container(
+                    margin: EdgeInsets.fromLTRB(8, 65, 8, 25),
+                    height: MediaQuery.of(context).size.height,
+                    child: CustomScrollView(slivers: [
+                      if (allowAds)
+                        if (Platform.isAndroid)
                           SliverToBoxAdapter(
-                              child: SizedBox(
-                                  height: 30,
-                                  child: Stack(children: [
-                                    Text(
-                                      'Trending on Youtube',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: 'Nunito',
-                                          fontSize: 19,
-                                          color: appColors().colorText),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                            margin:
-                                                EdgeInsets.fromLTRB(0, 2, 4, 0),
-                                            child: InkResponse(
-                                              child: Text(
-                                                'View all',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily: 'Nunito',
-                                                    fontSize: 15,
-                                                    color: appColors()
-                                                        .primaryColorApp),
-                                              ),
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Search("YT")),
-                                                ).then((value) {
-                                                  debugPrint(value);
-                                                  _reload();
-                                                });
-                                              },
-                                            ))),
-                                  ]))),
-                    if (is_yt == 1)
-                      if (videoResult.length > 0)
-                        SliverToBoxAdapter(
-                            child: SizedBox(
-                                height: 150,
-                                child: Container(
-                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: videoResult.length,
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, idx) {
-                                          return Column(
-                                            // align the text to the left instead of centered
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              InkResponse(
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadiusDirectional
-                                                            .circular(7.0),
-                                                    color: Colors.grey,
-                                                    image: DecorationImage(
-                                                      image: videoResult[idx]
-                                                              .thumbnail
-                                                              .medium
-                                                              .url
-                                                              .toString()
-                                                              .isEmpty
-                                                          ? AssetImage(
-                                                              'assets/images/placeholder2.jpg')
-                                                          : NetworkImage(
-                                                                  videoResult[
-                                                                          idx]
-                                                                      .thumbnail
-                                                                      .medium
-                                                                      .url
-                                                                      .toString())
-                                                              as ImageProvider,
-                                                      fit: BoxFit.fill,
-                                                      alignment:
-                                                          Alignment.topCenter,
-                                                    ),
-                                                  ),
-                                                  width: 120,
-                                                  height: 85,
-                                                  margin: EdgeInsets.all(4.8),
+                            child: //ads
+                                Container(
+                              height: 108,
+                              margin: EdgeInsets.all(1),
+                              child: (_isBannerAdReady)
+                                  ? Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Container(
+                                        width: _bannerAd.size.width.toDouble(),
+                                        height: 101,
+                                        child: AdWidget(ad: _bannerAd),
+                                      ),
+                                    )
+                                  : Container(),
+                            ),
+                          ),
+                      if (connected)
+                        if (is_yt == 1)
+                          if (videoResult.length > 0)
+                            SliverToBoxAdapter(
+                                child: SizedBox(
+                                    height: 30,
+                                    child: Stack(children: [
+                                      Text(
+                                        'Trending on Youtube',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Nunito',
+                                            fontSize: 19,
+                                            color: appColors().colorText),
+                                      ),
+                                      Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 2, 4, 0),
+                                              child: InkResponse(
+                                                child: Text(
+                                                  'View all',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Nunito',
+                                                      fontSize: 15,
+                                                      color: appColors()
+                                                          .primaryColorApp),
                                                 ),
                                                 onTap: () {
-                                                  listVideo = [];
-                                                  listVideo.add(DataMusic(
-                                                      1,
-                                                      videoResult[idx]
-                                                          .thumbnail
-                                                          .medium
-                                                          .url
-                                                          .toString(),
-                                                      videoResult[idx].url,
-                                                      videoResult[idx]
-                                                          .duration
-                                                          .toString(),
-                                                      videoResult[idx]
-                                                          .title
-                                                          .toString(),
-                                                      videoResult[idx]
-                                                          .description
-                                                          .toString(),
-                                                      1,
-                                                      "1",
-                                                      videoResult[idx]
-                                                          .channelTitle
-                                                          .toString(),
-                                                      '',
-                                                      1,
-                                                      1,
-                                                      1,
-                                                      "1",
-                                                      1,
-                                                      "1",
-                                                      ''));
-
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Music2(listVideo)),
+                                                            Search("YT")),
                                                   ).then((value) {
                                                     debugPrint(value);
                                                     _reload();
                                                   });
                                                 },
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.fromLTRB(
-                                                    0, 2, 0, 26),
-                                                child: Text(
-                                                  videoResult[idx].title,
-                                                  maxLines: 1,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: (sharedPreThemeData
-                                                              .themeImageBack
-                                                              .isEmpty)
-                                                          ? Color(int.parse(
-                                                              AppSettings
-                                                                  .colorText))
-                                                          : Color(int.parse(
-                                                              sharedPreThemeData
-                                                                  .themeColorFont))),
-                                                ),
-                                                width: 127,
-                                              ),
-                                            ],
-                                          );
-                                        })))),
-                    if (connected)
-                      if (hasYTPL)
-                        if (is_yt == 1)
+                                              ))),
+                                    ]))),
+                      if (is_yt == 1)
+                        if (videoResult.length > 0)
                           SliverToBoxAdapter(
-                            child: SizedBox(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount:
-                                        modelChannelYT.data.results.length,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return Stack(children: [
-                                        Text(
-                                          modelChannelYT.data.results[index]
-                                              .snippet.title,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontFamily: 'Nunito',
-                                              fontSize: 19,
-                                              color: appColors().colorText),
-                                        ),
-                                        Container(
-                                            margin: EdgeInsets.fromLTRB(
-                                                0, 29, 0, 0),
-                                            child: FutureBuilder<
-                                                    ModelPlayListYT>(
-                                                future: PlaylistCall()
-                                                    .getPlaylist(
-                                                        modelChannelYT.data
-                                                            .results[index].id,
-                                                        "" +
-                                                            modelSettings.data
-                                                                .google_api_key),
-                                                builder: (context,
-                                                    AsyncSnapshot projectSnap) {
-                                                  if (projectSnap.hasData) {
-                                                    modelListYT =
-                                                        projectSnap.data!;
-                                                    if (modelListYT
-                                                            .items.length ==
-                                                        0) {
-                                                      return Container(
+                              child: SizedBox(
+                                  height: 150,
+                                  child: Container(
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: videoResult.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, idx) {
+                                            return Column(
+                                              // align the text to the left instead of centered
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                InkResponse(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadiusDirectional
+                                                              .circular(7.0),
+                                                      color: Colors.grey,
+                                                      image: DecorationImage(
+                                                        image: videoResult[idx]
+                                                                .thumbnail
+                                                                .medium
+                                                                .url
+                                                                .toString()
+                                                                .isEmpty
+                                                            ? AssetImage(
+                                                                'assets/images/placeholder2.jpg')
+                                                            : NetworkImage(
+                                                                    videoResult[
+                                                                            idx]
+                                                                        .thumbnail
+                                                                        .medium
+                                                                        .url
+                                                                        .toString())
+                                                                as ImageProvider,
+                                                        fit: BoxFit.fill,
                                                         alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          'No Videos Found!\n',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Nunito',
-                                                              fontSize: 19,
-                                                              color: appColors()
-                                                                  .colorText),
-                                                        ),
-                                                      );
-                                                    }
-                                                    return Container(
-                                                        height: 149,
-                                                        child: ListView.builder(
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            itemCount:
-                                                                projectSnap
-                                                                    .data!
-                                                                    .items
-                                                                    .length,
-                                                            shrinkWrap: true,
-                                                            itemBuilder:
-                                                                (context, idx) {
-                                                              return Column(
-                                                                // align the text to the left instead of centered
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  InkResponse(
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadiusDirectional.circular(7.0),
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        image:
-                                                                            DecorationImage(
-                                                                          image: projectSnap.data!.items[idx].snippet.thumbnails.medium.url.toString().isEmpty
-                                                                              ? AssetImage('assets/images/placeholder2.jpg')
-                                                                              : NetworkImage(projectSnap.data!.items[idx].snippet.thumbnails.medium.url.toString()) as ImageProvider,
-                                                                          fit: BoxFit
-                                                                              .fill,
-                                                                          alignment:
-                                                                              Alignment.topCenter,
-                                                                        ),
-                                                                      ),
-                                                                      width:
-                                                                          120,
-                                                                      height:
-                                                                          86,
-                                                                      margin: EdgeInsets
-                                                                          .all(
-                                                                              4),
-                                                                    ),
-                                                                    onTap: () {
-                                                                      listVideo =
-                                                                          [];
-                                                                      listVideo.add(DataMusic(
-                                                                          1,
-                                                                          projectSnap
-                                                                              .data!
-                                                                              .items[
-                                                                                  idx]
-                                                                              .snippet
-                                                                              .thumbnails
-                                                                              .medium
-                                                                              .url
-                                                                              .toString(),
-                                                                          "https://www.youtube.com/watch?v=" +
-                                                                              projectSnap
-                                                                                  .data!
-                                                                                  .items[
-                                                                                      idx]
-                                                                                  .snippet
-                                                                                  .resourceId
-                                                                                  .videoId,
-                                                                          '',
-                                                                          projectSnap
-                                                                              .data!
-                                                                              .items[
-                                                                                  idx]
-                                                                              .snippet
-                                                                              .title
-                                                                              .toString(),
-                                                                          projectSnap
-                                                                              .data!
-                                                                              .items[
-                                                                                  idx]
-                                                                              .snippet
-                                                                              .description
-                                                                              .toString(),
-                                                                          1,
-                                                                          "1",
-                                                                          projectSnap
-                                                                              .data!
-                                                                              .items[idx]
-                                                                              .snippet
-                                                                              .description
-                                                                              .toString(),
-                                                                          '',
-                                                                          1,
-                                                                          1,
-                                                                          1,
-                                                                          "1",
-                                                                          1,
-                                                                          "1",
-                                                                          ''));
-
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                Music2(listVideo)),
-                                                                      ).then(
-                                                                          (value) {
-                                                                        debugPrint(
-                                                                            value);
-                                                                        _reload();
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                  Container(
-                                                                    margin: EdgeInsets
-                                                                        .fromLTRB(
-                                                                            0,
-                                                                            2,
-                                                                            0,
-                                                                            26.5),
-                                                                    child: Text(
-                                                                      projectSnap
-                                                                          .data!
-                                                                          .items[
-                                                                              idx]
-                                                                          .snippet
-                                                                          .title,
-                                                                      maxLines:
-                                                                          1,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color: (sharedPreThemeData.themeImageBack.isEmpty)
-                                                                              ? Color(int.parse(AppSettings.colorText))
-                                                                              : Color(int.parse(sharedPreThemeData.themeColorFont))),
-                                                                    ),
-                                                                    width: 127,
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            }));
-                                                  } else {
-                                                    print(
-                                                        "    === ${projectSnap.error.toString()}");
-                                                    if (projectSnap.hasError) {
-                                                      return Container(
-                                                        height: 35,
-                                                        child: Text(
-                                                          'Not present',
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              color: Color(int.parse(
-                                                                  sharedPreThemeData
-                                                                      .themeColorFont))),
-                                                        ),
-                                                      );
-                                                    }
-                                                    return Container(
-                                                      height: 35,
-                                                      child: Text(
-                                                        'Loading..',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Color(int.parse(
-                                                                sharedPreThemeData
-                                                                    .themeColorFont))),
+                                                            Alignment.topCenter,
                                                       ),
-                                                    );
-                                                  }
-                                                }))
-                                      ]);
-                                    })),
-                          ),
-                    if (!connected)
-                      SliverToBoxAdapter(
-                          child: SizedBox(
-                        child: Container(
-                            height: MediaQuery.of(context).size.height - 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/backnoimage.png',
-                                  height: 260,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                                InkResponse(
-                                  onTap: () {
-                                    checkConn();
-                                  },
-                                  child: Text(
-                                    'No Internet Found!\nTry Again',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: 'Nunito',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 21,
-                                        color: appColors().colorTextHead),
-                                  ),
-                                )
-                              ],
-                            )),
-                      )),
-                    if (connected)
-                      SliverToBoxAdapter(
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Container(
-                                margin: (Platform.isIOS)
-                                    ? EdgeInsets.fromLTRB(0, 0, 0, 25)
-                                    : EdgeInsets.fromLTRB(0, 0, 0, 18),
-                                child: FutureBuilder<ModelCatSubcatMusic>(
-                                    future: CatSubcatMusicPresenter()
-                                        .getCatSubCatMusicList(token),
-                                    builder: (context, projectSnap) {
-                                      if (projectSnap.hasError) {
-                                        return Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 15, 0, 0),
-                                          alignment: Alignment.center,
-                                          child: InkResponse(
-                                              onTap: () {
-                                                setState(() {});
-                                              },
-                                              child: (connected)
-                                                  ? Text(
-                                                      'Something went wrong...\n Click here to reload...',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: appColors()
-                                                              .colorTextHead,
-                                                          fontSize: 18),
-                                                    )
-                                                  : Container()),
-                                        );
-                                      } else {
-                                        if (projectSnap.hasData) {
-                                          ModelCatSubcatMusic m =
-                                              projectSnap.data!;
-
-                                          if (m.data.length < 1) {
-                                            return Container(
-                                                height: MediaQuery.of(context)
-                                                    .size
-                                                    .height,
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      height: 250,
-                                                      margin:
-                                                          EdgeInsets.fromLTRB(
-                                                              18, 60, 18, 15),
-                                                      child: Image.asset(
-                                                          'assets/images/placeholder.png'),
                                                     ),
-                                                    Text(
-                                                      'No Record Found !!',
-                                                      style: TextStyle(
+                                                    width: 120,
+                                                    height: 85,
+                                                    margin: EdgeInsets.all(4.8),
+                                                  ),
+                                                  onTap: () {
+                                                    listVideo = [];
+                                                    listVideo.add(DataMusic(
+                                                        1,
+                                                        videoResult[idx]
+                                                            .thumbnail
+                                                            .medium
+                                                            .url
+                                                            .toString(),
+                                                        videoResult[idx].url,
+                                                        videoResult[idx]
+                                                            .duration
+                                                            .toString(),
+                                                        videoResult[idx]
+                                                            .title
+                                                            .toString(),
+                                                        videoResult[idx]
+                                                            .description
+                                                            .toString(),
+                                                        1,
+                                                        "1",
+                                                        videoResult[idx]
+                                                            .channelTitle
+                                                            .toString(),
+                                                        '',
+                                                        1,
+                                                        1,
+                                                        1,
+                                                        "1",
+                                                        1,
+                                                        "1",
+                                                        ''));
+
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Music2(
+                                                                  listVideo)),
+                                                    ).then((value) {
+                                                      debugPrint(value);
+                                                      _reload();
+                                                    });
+                                                  },
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      0, 2, 0, 26),
+                                                  child: Text(
+                                                    videoResult[idx].title,
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
                                                         color: (sharedPreThemeData
                                                                 .themeImageBack
                                                                 .isEmpty)
@@ -959,285 +627,571 @@ class _state extends State<HomeDiscover> with WidgetsBindingObserver {
                                                                     .colorText))
                                                             : Color(int.parse(
                                                                 sharedPreThemeData
-                                                                    .themeColorFont)),
-                                                        fontFamily:
-                                                            'Nunito-Bold',
-                                                        fontSize: 20.0,
+                                                                    .themeColorFont))),
+                                                  ),
+                                                  width: 127,
+                                                ),
+                                              ],
+                                            );
+                                          })))),
+                      if (connected)
+                        if (hasYTPL)
+                          if (is_yt == 1)
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount:
+                                          modelChannelYT.data.results.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Stack(children: [
+                                          Text(
+                                            modelChannelYT.data.results[index]
+                                                .snippet.title,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'Nunito',
+                                                fontSize: 19,
+                                                color: appColors().colorText),
+                                          ),
+                                          Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 29, 0, 0),
+                                              child: FutureBuilder<
+                                                      ModelPlayListYT>(
+                                                  future: PlaylistCall()
+                                                      .getPlaylist(
+                                                          modelChannelYT
+                                                              .data
+                                                              .results[index]
+                                                              .id,
+                                                          "" +
+                                                              modelSettings.data
+                                                                  .google_api_key),
+                                                  builder: (context,
+                                                      AsyncSnapshot
+                                                          projectSnap) {
+                                                    if (projectSnap.hasData) {
+                                                      modelListYT =
+                                                          projectSnap.data!;
+                                                      if (modelListYT
+                                                              .items.length ==
+                                                          0) {
+                                                        return Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            'No Videos Found!\n',
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Nunito',
+                                                                fontSize: 19,
+                                                                color: appColors()
+                                                                    .colorText),
+                                                          ),
+                                                        );
+                                                      }
+                                                      return Container(
+                                                          height: 149,
+                                                          child:
+                                                              ListView.builder(
+                                                                  scrollDirection:
+                                                                      Axis
+                                                                          .horizontal,
+                                                                  itemCount:
+                                                                      projectSnap
+                                                                          .data!
+                                                                          .items
+                                                                          .length,
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          idx) {
+                                                                    return Column(
+                                                                      // align the text to the left instead of centered
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        InkResponse(
+                                                                          child:
+                                                                              Container(
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              borderRadius: BorderRadiusDirectional.circular(7.0),
+                                                                              color: Colors.grey,
+                                                                              image: DecorationImage(
+                                                                                image: projectSnap.data!.items[idx].snippet.thumbnails.medium.url.toString().isEmpty ? AssetImage('assets/images/placeholder2.jpg') : NetworkImage(projectSnap.data!.items[idx].snippet.thumbnails.medium.url.toString()) as ImageProvider,
+                                                                                fit: BoxFit.fill,
+                                                                                alignment: Alignment.topCenter,
+                                                                              ),
+                                                                            ),
+                                                                            width:
+                                                                                120,
+                                                                            height:
+                                                                                86,
+                                                                            margin:
+                                                                                EdgeInsets.all(4),
+                                                                          ),
+                                                                          onTap:
+                                                                              () {
+                                                                            listVideo =
+                                                                                [];
+                                                                            listVideo.add(DataMusic(
+                                                                                1,
+                                                                                projectSnap.data!.items[idx].snippet.thumbnails.medium.url.toString(),
+                                                                                "https://www.youtube.com/watch?v=" + projectSnap.data!.items[idx].snippet.resourceId.videoId,
+                                                                                '',
+                                                                                projectSnap.data!.items[idx].snippet.title.toString(),
+                                                                                projectSnap.data!.items[idx].snippet.description.toString(),
+                                                                                1,
+                                                                                "1",
+                                                                                projectSnap.data!.items[idx].snippet.description.toString(),
+                                                                                '',
+                                                                                1,
+                                                                                1,
+                                                                                1,
+                                                                                "1",
+                                                                                1,
+                                                                                "1",
+                                                                                ''));
+
+                                                                            Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(builder: (context) => Music2(listVideo)),
+                                                                            ).then((value) {
+                                                                              debugPrint(value);
+                                                                              _reload();
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Container(
+                                                                          margin: EdgeInsets.fromLTRB(
+                                                                              0,
+                                                                              2,
+                                                                              0,
+                                                                              26.5),
+                                                                          child:
+                                                                              Text(
+                                                                            projectSnap.data!.items[idx].snippet.title,
+                                                                            maxLines:
+                                                                                1,
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style:
+                                                                                TextStyle(fontSize: 14, color: (sharedPreThemeData.themeImageBack.isEmpty) ? Color(int.parse(AppSettings.colorText)) : Color(int.parse(sharedPreThemeData.themeColorFont))),
+                                                                          ),
+                                                                          width:
+                                                                              127,
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  }));
+                                                    } else {
+                                                      print(
+                                                          "    === ${projectSnap.error.toString()}");
+                                                      if (projectSnap
+                                                          .hasError) {
+                                                        return Container(
+                                                          height: 35,
+                                                          child: Text(
+                                                            'Not present',
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Color(int.parse(
+                                                                    sharedPreThemeData
+                                                                        .themeColorFont))),
+                                                          ),
+                                                        );
+                                                      }
+                                                      return Container(
+                                                        height: 35,
+                                                        child: Text(
+                                                          'Loading..',
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Color(int.parse(
+                                                                  sharedPreThemeData
+                                                                      .themeColorFont))),
+                                                        ),
+                                                      );
+                                                    }
+                                                  }))
+                                        ]);
+                                      })),
+                            ),
+                      if (!connected)
+                        SliverToBoxAdapter(
+                            child: SizedBox(
+                          child: Container(
+                              height: MediaQuery.of(context).size.height - 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/backnoimage.png',
+                                    height: 260,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                  InkResponse(
+                                    onTap: () {
+                                      checkConn();
+                                    },
+                                    child: Text(
+                                      'No Internet Found!\nTry Again',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: 'Nunito',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 21,
+                                          color: appColors().colorTextHead),
+                                    ),
+                                  )
+                                ],
+                              )),
+                        )),
+                      if (connected)
+                        SliverToBoxAdapter(
+                            child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Container(
+                                  margin: (Platform.isIOS)
+                                      ? EdgeInsets.fromLTRB(0, 0, 0, 25)
+                                      : EdgeInsets.fromLTRB(0, 0, 0, 18),
+                                  child: FutureBuilder<ModelCatSubcatMusic>(
+                                      future: CatSubcatMusicPresenter()
+                                          .getCatSubCatMusicList(token),
+                                      builder: (context, projectSnap) {
+                                        if (projectSnap.hasError) {
+                                          // log(projectSnap.error.toString());
+                                          return Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                0, 15, 0, 0),
+                                            alignment: Alignment.center,
+                                            child: InkResponse(
+                                                onTap: () {
+                                                  setState(() {});
+                                                },
+                                                child: (connected)
+                                                    ? Text(
+                                                        'Something went wrong...\n Click here to reload...',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: appColors()
+                                                                .colorTextHead,
+                                                            fontSize: 18),
+                                                      )
+                                                    : Container()),
+                                          );
+                                        } else {
+                                          if (projectSnap.hasData) {
+                                            ModelCatSubcatMusic m =
+                                                projectSnap.data!;
+
+                                            if (m.data.length < 1) {
+                                              return Container(
+                                                  height: MediaQuery.of(context)
+                                                      .size
+                                                      .height,
+                                                  alignment: Alignment.center,
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        height: 250,
+                                                        margin:
+                                                            EdgeInsets.fromLTRB(
+                                                                18, 60, 18, 15),
+                                                        child: Image.asset(
+                                                            'assets/images/placeholder.png'),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ));
-                                          } else {
-                                            return ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: m.data.length,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Column(
-                                                      children: [
-                                                        if (m
-                                                                .data[index]
-                                                                .sub_category
-                                                                .length >
-                                                            0)
-                                                          Stack(
-                                                            children: [
-                                                              Container(
-                                                                margin: EdgeInsets
-                                                                    .fromLTRB(
-                                                                        2.5,
-                                                                        0,
-                                                                        2,
-                                                                        2),
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Text(
-                                                                  m.data[index]
-                                                                          .cat_name +
-                                                                      "",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          19,
-                                                                      color: (sharedPreThemeData
-                                                                              .themeImageBack
-                                                                              .isEmpty)
-                                                                          ? Color(int.parse(AppSettings
-                                                                              .colorText))
-                                                                          : Color(
-                                                                              int.parse(sharedPreThemeData.themeColorFont))),
-                                                                ),
-                                                              ),
-                                                              InkResponse(
-                                                                onTap: () {
-                                                                  Navigator
-                                                                      .push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => AllCategoryByName(
-                                                                            _audioHandler,
-                                                                            m.data[index].cat_name)),
-                                                                  ).then(
-                                                                      (value) {
-                                                                    debugPrint(
-                                                                        value);
-                                                                    _reload();
-                                                                  });
-                                                                },
-                                                                child:
-                                                                    Container(
+                                                      Text(
+                                                        'No Record Found !!',
+                                                        style: TextStyle(
+                                                          color: (sharedPreThemeData
+                                                                  .themeImageBack
+                                                                  .isEmpty)
+                                                              ? Color(int.parse(
+                                                                  AppSettings
+                                                                      .colorText))
+                                                              : Color(int.parse(
+                                                                  sharedPreThemeData
+                                                                      .themeColorFont)),
+                                                          fontFamily:
+                                                              'Nunito-Bold',
+                                                          fontSize: 20.0,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ));
+                                            } else {
+                                              return ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: m.data.length,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return Container(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Column(
+                                                        children: [
+                                                          if (m
+                                                                  .data[index]
+                                                                  .sub_category
+                                                                  .length >
+                                                              0)
+                                                            Stack(
+                                                              children: [
+                                                                Container(
                                                                   margin: EdgeInsets
                                                                       .fromLTRB(
-                                                                          2,
+                                                                          2.5,
                                                                           0,
                                                                           2,
-                                                                          1),
+                                                                          2),
                                                                   alignment:
                                                                       Alignment
-                                                                          .centerRight,
+                                                                          .centerLeft,
                                                                   child: Text(
-                                                                    'View all',
+                                                                    m.data[index]
+                                                                            .cat_name +
+                                                                        "",
                                                                     textAlign:
                                                                         TextAlign
                                                                             .left,
                                                                     style: TextStyle(
                                                                         fontSize:
-                                                                            15,
-                                                                        color: appColors()
-                                                                            .primaryColorApp),
+                                                                            19,
+                                                                        color: (sharedPreThemeData.themeImageBack.isEmpty)
+                                                                            ? Color(int.parse(AppSettings.colorText))
+                                                                            : Color(int.parse(sharedPreThemeData.themeColorFont))),
                                                                   ),
                                                                 ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        Container(
-                                                            width: 500,
-                                                            height: (m
-                                                                        .data[
-                                                                            index]
-                                                                        .sub_category
-                                                                        .length <
-                                                                    1)
-                                                                ? 10
-                                                                : (Platform
-                                                                        .isIOS)
-                                                                    ? 167
-                                                                    : 157,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: ListView
-                                                                .builder(
-                                                                    scrollDirection:
-                                                                        Axis
-                                                                            .horizontal,
-                                                                    itemCount: m
-                                                                        .data[
-                                                                            index]
-                                                                        .sub_category
-                                                                        .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            idx) {
-                                                                      return Column(
-                                                                        // align the text to the left instead of centered
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: <
-                                                                            Widget>[
-                                                                          InkResponse(
-                                                                            child:
-                                                                                Container(
-                                                                              decoration: BoxDecoration(
-                                                                                color: Colors.grey,
-                                                                                borderRadius: BorderRadiusDirectional.circular(7.0),
-                                                                                image: DecorationImage(
-                                                                                  image: m.data[index].sub_category[idx].image.isEmpty
-                                                                                      ? AssetImage('assets/images/placeholder2.jpg')
-                                                                                      : NetworkImage(
-                                                                                          AppConstant.ImageUrl + m.data[index].imagePath + m.data[index].sub_category[idx].image,
-                                                                                        ) as ImageProvider,
-                                                                                  fit: BoxFit.cover,
-                                                                                  alignment: Alignment.topCenter,
+                                                                InkResponse(
+                                                                  onTap: () {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => AllCategoryByName(
+                                                                              _audioHandler,
+                                                                              m.data[index].cat_name)),
+                                                                    ).then(
+                                                                        (value) {
+                                                                      debugPrint(
+                                                                          value);
+                                                                      _reload();
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            2,
+                                                                            0,
+                                                                            2,
+                                                                            1),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerRight,
+                                                                    child: Text(
+                                                                      'View all',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          color:
+                                                                              appColors().primaryColorApp),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          Container(
+                                                              width: 500,
+                                                              height: (m
+                                                                          .data[
+                                                                              index]
+                                                                          .sub_category
+                                                                          .length <
+                                                                      1)
+                                                                  ? 10
+                                                                  : (Platform
+                                                                          .isIOS)
+                                                                      ? 167
+                                                                      : 157,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: ListView
+                                                                  .builder(
+                                                                      scrollDirection:
+                                                                          Axis
+                                                                              .horizontal,
+                                                                      itemCount: m
+                                                                          .data[
+                                                                              index]
+                                                                          .sub_category
+                                                                          .length,
+                                                                      itemBuilder:
+                                                                          (context,
+                                                                              idx) {
+                                                                        return Column(
+                                                                          // align the text to the left instead of centered
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: <
+                                                                              Widget>[
+                                                                            InkResponse(
+                                                                              child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: Colors.grey,
+                                                                                  borderRadius: BorderRadiusDirectional.circular(7.0),
+                                                                                  image: DecorationImage(
+                                                                                    image: m.data[index].sub_category[idx].image.isEmpty
+                                                                                        ? AssetImage('assets/images/placeholder2.jpg')
+                                                                                        : NetworkImage(
+                                                                                            AppConstant.ImageUrl + m.data[index].imagePath + m.data[index].sub_category[idx].image,
+                                                                                          ) as ImageProvider,
+                                                                                    fit: BoxFit.cover,
+                                                                                    alignment: Alignment.topCenter,
+                                                                                  ),
                                                                                 ),
+                                                                                width: 120,
+                                                                                height: 94,
+                                                                                margin: EdgeInsets.all(4),
                                                                               ),
-                                                                              width: 120,
-                                                                              height: 94,
-                                                                              margin: EdgeInsets.all(4),
+                                                                              onTap: () {
+                                                                                if (m.data[index].cat_name.contains("Albums") || m.data[index].cat_name.contains("Artists") || m.data[index].cat_name.contains("Genres")) {
+                                                                                  Navigator.push(
+                                                                                    context,
+                                                                                    MaterialPageRoute(builder: (context) => MusicList(_audioHandler, "" + m.data[index].sub_category[idx].id.toString(), m.data[index].cat_name, m.data[index].sub_category[idx].name)),
+                                                                                  ).then((value) {
+                                                                                    debugPrint(value);
+                                                                                    _reload();
+                                                                                  });
+                                                                                } else {
+                                                                                  Navigator.push(
+                                                                                    context,
+                                                                                    MaterialPageRoute(builder: (context) => Music(_audioHandler, "" + m.data[index].sub_category[idx].id.toString(), m.data[index].cat_name, [], "", 0, false, '')),
+                                                                                  ).then((value) {
+                                                                                    debugPrint(value);
+                                                                                    _reload();
+                                                                                  });
+                                                                                }
+                                                                              },
                                                                             ),
-                                                                            onTap:
-                                                                                () {
-                                                                              if (m.data[index].cat_name.contains("Albums") || m.data[index].cat_name.contains("Artists") || m.data[index].cat_name.contains("Genres")) {
-                                                                                Navigator.push(
-                                                                                  context,
-                                                                                  MaterialPageRoute(builder: (context) => MusicList(_audioHandler, "" + m.data[index].sub_category[idx].id.toString(), m.data[index].cat_name, m.data[index].sub_category[idx].name)),
-                                                                                ).then((value) {
-                                                                                  debugPrint(value);
-                                                                                  _reload();
-                                                                                });
-                                                                              } else {
-                                                                                Navigator.push(
-                                                                                  context,
-                                                                                  MaterialPageRoute(builder: (context) => Music(_audioHandler, "" + m.data[index].sub_category[idx].id.toString(), m.data[index].cat_name, [], "", 0, false, '')),
-                                                                                ).then((value) {
-                                                                                  debugPrint(value);
-                                                                                  _reload();
-                                                                                });
-                                                                              }
-                                                                            },
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.fromLTRB(
-                                                                                0,
-                                                                                0,
-                                                                                0,
-                                                                                1.6),
-                                                                            child:
-                                                                                Text(
-                                                                              m.data[index].sub_category[idx].name,
-                                                                              maxLines: 1,
-                                                                              textAlign: TextAlign.center,
-                                                                              style: TextStyle(fontSize: 14, color: (sharedPreThemeData.themeImageBack.isEmpty) ? Color(int.parse(AppSettings.colorText)) : Color(int.parse(sharedPreThemeData.themeColorFont))),
+                                                                            Container(
+                                                                              margin: EdgeInsets.fromLTRB(0, 0, 0, 1.6),
+                                                                              child: Text(
+                                                                                m.data[index].sub_category[idx].name,
+                                                                                maxLines: 1,
+                                                                                textAlign: TextAlign.center,
+                                                                                style: TextStyle(fontSize: 14, color: (sharedPreThemeData.themeImageBack.isEmpty) ? Color(int.parse(AppSettings.colorText)) : Color(int.parse(sharedPreThemeData.themeColorFont))),
+                                                                              ),
+                                                                              width: 127,
                                                                             ),
-                                                                            width:
-                                                                                127,
-                                                                          ),
-                                                                        ],
-                                                                      );
-                                                                    }))
+                                                                          ],
+                                                                        );
+                                                                      }))
+                                                        ],
+                                                      ));
+                                                },
+                                              );
+                                            }
+                                          } else {
+                                            return Material(
+                                                type: MaterialType.transparency,
+                                                child: Container(
+                                                    height: 120,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    alignment: Alignment.center,
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        10, 70, 10, 0),
+                                                    color: appColors()
+                                                        .colorBackEditText,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        SizedBox(
+                                                            child: CircularProgressIndicator(
+                                                                valueColor:
+                                                                    AlwaysStoppedAnimation(
+                                                                        appColors()
+                                                                            .primaryColorApp),
+                                                                backgroundColor:
+                                                                    appColors()
+                                                                        .colorHint,
+                                                                strokeWidth:
+                                                                    4.0)),
+                                                        Container(
+                                                            margin:
+                                                                EdgeInsets.all(
+                                                                    4),
+                                                            child: Text(
+                                                              Resources.of(
+                                                                      context)
+                                                                  .strings
+                                                                  .loadingPleaseWait,
+                                                              style: TextStyle(
+                                                                  color: appColors()
+                                                                      .colorTextHead,
+                                                                  fontSize: 18),
+                                                            )),
                                                       ],
-                                                    ));
-                                              },
-                                            );
+                                                    )));
                                           }
-                                        } else {
-                                          return Material(
-                                              type: MaterialType.transparency,
-                                              child: Container(
-                                                  height: 120,
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  alignment: Alignment.center,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 70, 10, 0),
-                                                  color: appColors()
-                                                      .colorBackEditText,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                          child: CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation(
-                                                                      appColors()
-                                                                          .primaryColorApp),
-                                                              backgroundColor:
-                                                                  appColors()
-                                                                      .colorHint,
-                                                              strokeWidth:
-                                                                  4.0)),
-                                                      Container(
-                                                          margin:
-                                                              EdgeInsets.all(4),
-                                                          child: Text(
-                                                            Resources.of(
-                                                                    context)
-                                                                .strings
-                                                                .loadingPleaseWait,
-                                                            style: TextStyle(
-                                                                color: appColors()
-                                                                    .colorTextHead,
-                                                                fontSize: 18),
-                                                          )),
-                                                    ],
-                                                  )));
                                         }
-                                      }
-                                    }),
-                              )))
-                  ]),
+                                      }),
+                                )))
+                    ]),
 
-                  //start
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 62, 0, 0),
-                  child: UpgradeCard(),
-                ) //end
-              ],
+                    //start
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 62, 0, 0),
+                    child: UpgradeCard(),
+                  ) //end
+                ],
+              ),
             ),
           ),
-        ),
-        panel: Music(_audioHandler, "", "", [], "bottomSlider", 0, true,
-            _controller.hide),
-        panelHeader: StreamBuilder<MediaItem?>(
-            stream: _audioHandler!.mediaItem,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                _panelMinSize = 63.0;
+          panel: Music(_audioHandler, "", "", [], "bottomSlider", 0, true,
+              _controller.hide),
+          panelHeader: StreamBuilder<MediaItem?>(
+              stream: _audioHandler!.mediaItem,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  _panelMinSize = 63.0;
 
-                return BottomNavigation(_audioHandler).getNaviagtion(context);
-              } else {
-                _panelMinSize = 0.0;
-                return Container(
-                  height: 0.0,
-                  color: appColors().colorBackground,
-                );
-              }
-            }),
-        panelMinSize: _panelMinSize,
-        panelMaxSize: _panelMaxSize,
-        blur: true,
+                  return BottomNavigation(_audioHandler).getNaviagtion(context);
+                } else {
+                  _panelMinSize = 0.0;
+                  return Container(
+                    height: 0.0,
+                    color: appColors().colorBackground,
+                  );
+                }
+              }),
+          panelMinSize: _panelMinSize,
+          panelMaxSize: _panelMaxSize,
+          blur: true,
+        ),
       ),
-    ));
+    );
   }
 }
 
