@@ -4,9 +4,9 @@ class AppConstant {
   //app name
   static const String appName = 'TeleMusic';
 
-  static const String BaseUrl = "https://telemusic.io/public/api/v1/";
+  static const String BaseUrl = "https://dash.telemusic.io/public/api/v1/";
   static const String ImageUrl =
-      "https://telemusic.io/public/"; //main web url or base url here
+      "https://dash.telemusic.io/public/"; //main web url or base url here
 
   //api name below
   static const String API_LOGIN = "login";
